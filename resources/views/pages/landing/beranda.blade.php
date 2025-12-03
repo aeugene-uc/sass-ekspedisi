@@ -24,7 +24,7 @@
         >
             <p class="text-muted">Kami menawarkan berbagai layanan pengiriman yang dirancang untuk memenuhi kebutuhan logistik Anda. Dari pengiriman reguler hingga layanan khusus, kami siap membantu Anda mengirimkan barang dengan aman dan tepat waktu.</p>
         </x-section-heading-and-container>
-        <x-card-grid grid_id="layanan" :list="$layanan"  />
+        {{-- <x-card-grid grid_id="layanan" :list="$layanan"  /> --}}
     </div>
 </section>
 
@@ -74,7 +74,7 @@
                 Dengan jaringan yang luas dan tim operasional yang profesional, kami siap melayani pengiriman Anda ke berbagai wilayah dengan efisiensi dan keandalan tinggi.
             </p>
         </x-section-heading-and-container>
-        <x-card-grid grid_id="jangkauan" :list="$jangkauan"  />
+        {{-- <x-card-grid grid_id="jangkauan" :list="$jangkauan"  /> --}}
     </div>
 </section>
 
@@ -86,7 +86,7 @@
 
 <style>
     .jumbotron {
-        background-image: url('{{ asset('images/jumbotron-test.jpg') }}');
+        /*background-image: url('{{ asset('images/jumbotron-test.jpg') }}');*/
         background-size: cover;
         background-position: bottom;
         background-repeat: no-repeat;
@@ -97,7 +97,3 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
 </style>
-
-
-
-{{-- halo --}}

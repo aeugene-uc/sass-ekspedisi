@@ -1,0 +1,24 @@
+.theme-button {
+  background-color: #f15a25 !important;
+  color: black !important;
+  border: none !important;
+  transition: none !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: 0.3s ease;
+}
+
+.theme-button:hover {
+  color: white !important;
+}
+
+.section-vert-p {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.text-color-theme {
+  color: #f15a25;
+}
+
+
