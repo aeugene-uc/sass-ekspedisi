@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('modelName') - Dashboard Abeka Transportation</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <title>@yield('title')</title>
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link rel="icon" href="{{ asset('images/logo-trans-white.png') }}" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top shadow">
         <div class="container-fluid">
-            <a class="navbar-brand me-auto" href="{{  route('beranda') }}">
-                <img src="{{ asset('images/logo-trans-white.png') }}" alt="Logo navbar Abeka" class="d-inline-block align-text-top">
+            <a class="navbar-brand me-auto" href="{{ route('beranda') }}">
+                <img src="{{ asset('images/logo-trans-white.png') }}" class="d-inline-block align-text-top">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

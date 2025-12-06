@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 
-@section('title', 'Abeka Transportation')
+@section('title', config('app.name'))
 
 @section('content')
 
@@ -8,9 +8,9 @@
   <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
 
   <div class="container position-relative text-white text-center d-flex flex-column justify-content-center align-items-center h-100">
-      <h1 class="fw-bold display-4">Solusi Terpercaya untuk Pengiriman Anda</h1>
+      <h1 class="fw-bold display-4">Solusi Terpercaya untuk Bisnis Ekspedisi Anda</h1>
       <p class="lead mt-3">
-          Abeka Transportation — Mitra ekspedisi andalan sejak 1994, melayani pengiriman antar kota dengan aman dan tepat waktu.
+        Kelola pengiriman lebih cepat, akurat, dan efisien dengan platform ekspedisi terpadu yang dirancang untuk mendukung pertumbuhan bisnis Anda.
       </p>
       <a href="#layanan" class="btn btn-lg theme-button">Pelajari Layanan Kami</a>
   </div>
@@ -24,7 +24,6 @@
         >
             <p class="text-muted">Kami menawarkan berbagai layanan pengiriman yang dirancang untuk memenuhi kebutuhan logistik Anda. Dari pengiriman reguler hingga layanan khusus, kami siap membantu Anda mengirimkan barang dengan aman dan tepat waktu.</p>
         </x-section-heading-and-container>
-        {{-- <x-card-grid grid_id="layanan" :list="$layanan"  /> --}}
     </div>
 </section>
 
@@ -40,22 +39,22 @@
         </x-landiherdng.section-heading-and-container>
         
         <div class="row g-4">
-            <x-mengapa-col
+            <x-landing.mengapa-col
                 number="1"
                 title="Efisiensi Biaya dan Waktu Maksimal"
                 body="Kami menjamin layanan pengiriman yang cepat tanpa mengorbankan dompet Anda dan kami berkomitmen untuk memberikan solusi logistik yang hemat biaya dengan tetap menjaga standar ketepatan waktu yang tinggi."
             />
-            <x-mengapa-col 
+            <x-landing.mengapa-col 
                 number="2"
                 title="Kekuatan Tim Operasional yang Profesional"
                 body="Di balik setiap pengiriman sukses adalah tim kami yang solid, terlatih, dan berdedikasi tinggi. Setiap anggota tim bekerja secara profesional untuk memastikan barang Anda ditangani dengan hati-hati dan keahlian terbaik."
             />
-            <x-mengapa-col 
+            <x-landing.mengapa-col 
                 number="3"
                 title="Jaringan Luas dan Keandalan Regional"
                 body="Kami telah membangun fokus operasional yang kuat di berbagai wilayah strategis, menawarkan jangkauan yang luas dan keandalan yang telah teruji di daerah tersebut."
             />
-            <x-mengapa-col 
+            <x-landing.mengapa-col 
                 number="4"
                 title="Komitmen Penuh terhadap Keamanan"
                 body="Kami menempatkan keamanan barang Anda sebagai prioritas utama dan kami sangat menjamin setiap paket diangkut dengan integritas penuh dan tiba di tujuan dalam kondisi utuh dan sesuai jadwal yang telah disepakati."
@@ -86,7 +85,7 @@
 
 <style>
     .jumbotron {
-        /*background-image: url('{{ asset('images/jumbotron-test.jpg') }}');*/
+        background-image: url('{{ asset('images/beranda-jumbotron.jpg') }}');
         background-size: cover;
         background-position: bottom;
         background-repeat: no-repeat;
