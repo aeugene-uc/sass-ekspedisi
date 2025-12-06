@@ -1,6 +1,6 @@
 @extends("layouts.landing")
 
-@section('title', 'Company Profile - Abeka Transportation')
+@section('title', 'Tentang Kami - ' . config('app.name'))
 
 @section('content')
 

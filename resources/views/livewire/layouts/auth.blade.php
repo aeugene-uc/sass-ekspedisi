@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title')</title>
-    {{-- <link rel="stylesheet" href="{{ asset('css/theme.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> --}}
+    <title>{{ $title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <tallstackui:script />
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @tallstackUiStyles
 </head>
 <body>
-    @yield('content')
+    <div class="h-screen w-screen flex justify-center bg-gray-100 pt-24 overflow-y-auto">
+        <x-range label="Primary" />
+        <x-range color="red" label="Secondary" />
+        {{ $slot }}
+    </div>
+
+    @livewireScripts
 </body>
 </html>

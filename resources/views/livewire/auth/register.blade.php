@@ -1,67 +1,30 @@
-<x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
-
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
-            @csrf
-            <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                :value="old('name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                viewable
-            />
-
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                viewable
-            />
-
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
-                    {{ __('Create account') }}
-                </flux:button>
-            </div>
-        </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+<form wire:submit.prevent="login" class="max-w-[90vw] w-md">
+    <x-card class="px-8 py-10 flex flex-col shadow space-y-8">
+        <div class="flex justify-center">
+            <h3 class="font-semibold text-2xl">{{ $title }}</h3>
         </div>
-    </div>
-</x-layouts.auth>
+
+        <x-errors />
+
+        <x-input label="Full Name *" class="px-3 py-3" />
+        <x-input label="Email *" class="px-3 py-3" type="email" />
+        <x-password label="Password *" class="px-3 py-3" />
+        <x-password label="Confirm Password *" class="px-3 py-3" />
+
+
+        <x-button type="submit" class="bg-theme hover:text-white cursor-pointer duration-300">{{  $isLogin ? 'Login' : 'Register' }}</x-button>
+
+
+        <div class="text-center">
+            <span class="text-sm text-gray-600">Sudah punya akun?</span>
+
+            <button 
+                wire:navigate 
+                {{-- href="{{ route('login') }}" --}}
+                class="text-sm text-theme font-semibold hover:underline cursor-pointer"
+            >
+                Masuk
+            </button>
+        </div>
+    </x-card>
+</form>

@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\LandingController;
+use App\Livewire\Auth;
 
 // Landing
 Route::get('/', [LandingController::class, 'beranda'])->name('beranda');
-Route::get('/tarif', [LandingController::class, 'tarif'])->name('tarif');
-Route::get('/profil-perusahaan', [LandingController::class, 'profilPerusahaan'])->name('profil-perusahaan');
-Route::get('/informasi-umum/{kategori?}', [LandingController::class, 'informasiUmum'])->name('informasi-umum');
+Route::get('/tentang-kami', [LandingController::class, 'profilPerusahaan'])->name('profil-perusahaan');
+
+// Platform Dashboard
+Route::prefix('admin')->group(function () {
+    Route::get('/login', Auth\Login::class);
+});
