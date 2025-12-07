@@ -1,34 +1,40 @@
-<form wire:submit.prevent="login" class="max-w-[90vw] w-md">
-    <x-card class="px-8 py-10 flex flex-col shadow space-y-8">
+<form wire:submit.prevent="login" class="max-w-[90vw] w-md mx-auto">
+    <div class="card shadow-lg p-8 flex flex-col space-y-6">
         <div class="flex justify-center">
             <h3 class="font-semibold text-2xl">{{ $title }}</h3>
         </div>
 
         @error('loginError')
-            <div class="bg-red-100 text-red-700 px-4 py-3 rounded border border-red-300">
-                Error: {{ $message }}
+            <div class="alert alert-error shadow-lg">
+                {{ $message }}
             </div>
-            {{-- <x-alert color="red"  title="Error" :text="$message" /> --}}
         @enderror
 
-        <x-input label="Email *" class="px-3 py-3" type="email" wire:model="email" required />
-        <x-password label="Password *" class="px-3 py-3" wire:model="password" required />
+        <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">Email *</span>
+            </label>
+            <input type="email" placeholder="Email" wire:model="email" required class="input input-bordered w-full" />
+        </div>
 
+        <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">Password *</span>
+            </label>
+            <input type="password" placeholder="Password" wire:model="password" required class="input input-bordered w-full" />
+        </div>
 
-        <x-button type="submit" class="bg-theme hover:text-white cursor-pointer duration-300">Login</x-button>
+        <button type="submit" class="btn btn-primary w-full">
+            Login
+        </button>
 
-        @if($registerEnabled)
+        @if ($registerEnabled)
             <div class="text-center">
                 <span class="text-sm text-gray-600">Belum punya akun?</span>
-
-                <button 
-                    wire:navigate 
-                    href="./register"
-                    class="text-sm text-theme font-semibold hover:underline cursor-pointer"
-                >
+                <a wire:navigate href="./register" class="text-sm text-primary font-semibold hover:underline ml-1">
                     Daftar
-                </button>
+                </a>
             </div>
         @endif
-    </x-card>
+    </div>
 </form>

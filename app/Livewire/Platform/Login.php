@@ -48,7 +48,6 @@ class Login extends Component
         return $this->redirect(route('platform.dashboard'), navigate: true);
     }
 
-
     public function render()
     {
         return view('livewire.auth.login')->layout('livewire.layouts.auth', [

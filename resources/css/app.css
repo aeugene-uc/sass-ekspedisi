@@ -1,30 +1,61 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import "tailwindcss";
 
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "mytheme";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
 
-@source '../views';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
-@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+  /* ---------------------------
+     Bootstrap-like Backgrounds
+     --------------------------- */
+  --color-base-100: #f8f9fa; /* bg-light */
+  --color-base-200: #e9ecef;
+  --color-base-300: #dee2e6;
+  --color-base-content: #212529; /* bootstrap dark text */
 
-@custom-variant dark (&:where(.dark, .dark *));
+  /* ---------------------------
+     Primary (Your button color)
+     --------------------------- */
+  --color-primary: #F15A29;
+  --color-primary-content: #ffffff;
 
-@theme {
-  --color-theme: #F15A29;
+  /* ---------------------------
+     Secondary (muted bootstrap)
+     --------------------------- */
+  --color-secondary: #6c757d;
+  --color-secondary-content: #ffffff;
+
+  /* ---------------------------
+     Accent (optional)
+     --------------------------- */
+  --color-accent: #e83e8c;
+  --color-accent-content: #ffffff;
+
+  /* ---------------------------
+     Bootstrap Dark Header
+     --------------------------- */
+  --color-neutral: #212529;  /* navbar bg */
+  --color-neutral-content: #ffffff;
+
+  /* ---------------------------
+     Inputs (Bootstrap-like fields)
+     --------------------------- */
+  --color-info: #0dcaf0;
+  --color-success: #198754;
+  --color-warning: #ffc107;
+  --color-error: #dc3545;
+
+  /* input backgrounds + border */
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --border: 1px;
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
-}
+/* @tailwind utilities;  */
 
-@layer base {
-    * {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
-
-@tailwind utilities;
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";

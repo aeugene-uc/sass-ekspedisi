@@ -13,11 +13,15 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/tentang-kami', [LandingController::class, 'profilPerusahaan'])->name('profil-perusahaan');
 
     // Platform Dashboard
-    Route::prefix('admin')->group(function () {
-        Route::get('/login', Platform\Login::class);
+    Route::middleware('platform.admin.access')->prefix('admin')->group(function () {
+        Route::get('/login', Platform\Login::class)
+            ->name('platform.login');
 
-        Route::middleware(['auth'])->group(function () {
-            Route::get('/', Platform\Dashboard::class)->name('platform.dashboard');
-        });
+        Route::get('/', Platform\Dashboard::class)
+            ->name('platform.dashboard');
     });
+});
+
+Route::domain('{subdomain}.' . config('app.domain'))->group(function () {
+    // Other subdomain routes can be defined here
 });
