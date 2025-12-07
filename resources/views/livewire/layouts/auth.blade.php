@@ -12,8 +12,6 @@
 </head>
 <body>
     <div class="h-screen w-screen flex justify-center bg-gray-100 pt-24 overflow-y-auto">
-        <x-range label="Primary" />
-        <x-range color="red" label="Secondary" />
         {{ $slot }}
     </div>
 

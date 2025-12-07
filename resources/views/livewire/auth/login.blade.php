@@ -15,7 +15,7 @@
         <x-password label="Password *" class="px-3 py-3" wire:model="password" required />
 
 
-        <x-button type="submit" class="bg-theme hover:text-white cursor-pointer duration-300">{{  $isLogin ? 'Login' : 'Register' }}</x-button>
+        <x-button type="submit" class="bg-theme hover:text-white cursor-pointer duration-300">Login</x-button>
 
         @if($registerEnabled)
             <div class="text-center">

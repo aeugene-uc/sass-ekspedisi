@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace App\Livewire\Platform;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -9,27 +9,14 @@ class Login extends Component
 {
     public $title;
     public $registerEnabled;
-    public $isLogin;
-    public $successRoute;
 
     public $email;
     public $password;
 
     public function mount()
     {
-        $isSubdomain = count(explode('.', request()->getHost())) > 2;
-
-        if ($isSubdomain) {
-            $this->title = 'Company Login'; // Replace with query
-            $this->registerEnabled = true;
-            $this->successRoute = '/dashboard';
-        } else {
-            $this->title = 'Platform Admin Login';
-            $this->registerEnabled = false;
-            $this->successRoute = '/admin';
-        }
-
-        $this->isLogin = !str_ends_with(request()->path(), 'register');
+        $this->title = 'Platform Admin Login';
+        $this->registerEnabled = false;
     }
 
 
@@ -50,9 +37,15 @@ class Login extends Component
             return $this->addError('loginError', 'Email atau password salah.');
         }
 
+        if (!Auth::user()->peran->is_platform_admin) {
+            Auth::logout();
+            $this->password = '';
+            return $this->addError('loginError', 'Email atau password salah.');
+        }
+
         session()->regenerate();
 
-        return $this->redirect($this->successRoute, navigate: true);
+        return $this->redirect(route('platform.dashboard'), navigate: true);
     }
 
 
@@ -60,8 +53,7 @@ class Login extends Component
     {
         return view('livewire.auth.login')->layout('livewire.layouts.auth', [
             'title' => $this->title,
-            'registerEnabled' => $this->registerEnabled,
-            'isLogin' => $this->isLogin
+            'registerEnabled' => $this->registerEnabled
         ]);
     }
 }

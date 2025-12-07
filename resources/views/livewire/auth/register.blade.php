@@ -1,4 +1,4 @@
-<form wire:submit.prevent="login" class="max-w-[90vw] w-md">
+<form wire:submit.prevent="register" class="max-w-[90vw] w-md">
     <x-card class="px-8 py-10 flex flex-col shadow space-y-8">
         <div class="flex justify-center">
             <h3 class="font-semibold text-2xl">{{ $title }}</h3>
@@ -12,7 +12,7 @@
         <x-password label="Confirm Password *" class="px-3 py-3" />
 
 
-        <x-button type="submit" class="bg-theme hover:text-white cursor-pointer duration-300">{{  $isLogin ? 'Login' : 'Register' }}</x-button>
+        <x-button type="submit" class="bg-theme hover:text-white cursor-pointer duration-300">Register</x-button>
 
 
         <div class="text-center">
