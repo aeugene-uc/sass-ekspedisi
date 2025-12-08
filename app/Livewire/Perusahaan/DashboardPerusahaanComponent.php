@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Livewire\Platform;
+namespace App\Livewire\Perusahaan;
 
+use App\Models\Perusahaan;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
-class DashboardPlatformComponent extends Component
+class DashboardPerusahaanComponent extends Component
 {
     #[Layout('livewire.layouts.dashboard')]
-    public function viewExtends($view)
+    public function viewExtends($view, $viewData)
     {
-        // return view($view)
-        //     ->layoutData([
-        //         'title' => 'Platform' . 'NAMA_PERUSAHAAN' . 'Dashboard',
-        //         'links' => [
-        //             'Perusahaan' => route('platform.perusahaan'),
-        //             'Laporan Keuangan' => route('platform.laporan-keuangan')
-        //         ]
-        //     ]);
+        $subdomain = explode('.', request()->getHost())[0];
+
+        return view($view, $viewData)
+            ->layoutData([
+                'title' => Perusahaan::where('subdomain', $subdomain)->first()->nama ?? 'Dashboard Perusahaan',
+                'links' => [
+                    'Peran User' => route('perusahaan.peran-user', ['subdomain' => $subdomain]),
+                    // 'Laporan Keuangan' => route('platform.laporan-keuangan')
+                ]
+            ]);
     }
 }

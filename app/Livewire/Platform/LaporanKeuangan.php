@@ -9,6 +9,6 @@ class LaporanKeuangan extends DashboardPlatformComponent
 {
     public function render()
     {
-        return $this->viewExtends('livewire.platform.laporan-keuangan');
+        return $this->viewExtends('livewire.platform.laporan-keuangan', []);
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Platform;
+namespace App\Livewire\Perusahaan;
 
+use App\Models\Perusahaan;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,10 @@ class Login extends Component
 
     public function mount()
     {
-        $this->title = 'Platform Admin Login';
-        $this->registerEnabled = false;
+        $subdomain = explode('.', request()->getHost())[0];
+
+        $this->title = 'Login ke ' . Perusahaan::where('subdomain', $subdomain)->first()->nama ?? 'Login';
+        $this->registerEnabled = true;
     }
 
 
@@ -31,35 +34,33 @@ class Login extends Component
             'password.required' => 'Password harus diisi.',
         ]);
 
-        $credentials = [
-            'email' => $this->email,
-            'password' => $this->password,
-        ];
-
-        if (!Auth::validate($credentials)) {
+        // Lakukan autentikasi
+        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             $this->password = '';
             return $this->addError('loginError', 'Email atau password salah.');
         }
 
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+        $userPeran = Auth::user()->peran;
+        $currentSubdomain = explode('.', request()->getHost())[0];
 
-        if (!$user->peran->is_platform_admin) {
+        if (
+            !$userPeran->is_platform_admin && (
+                $userPeran->perusahaan_id === null ||
+                $userPeran->perusahaan->subdomain !== $currentSubdomain
+            )
+        ) {
+            Auth::logout();
             $this->password = '';
             return $this->addError('loginError', 'Email atau password salah.');
         }
 
-        Auth::login($user);
         session()->regenerate();
 
-        return $this->redirect(route('platform.dashboard'), navigate: true);
+        return $this->redirect(route('perusahaan.dashboard'), navigate: true);
     }
 
     public function render()
     {
-        if (Auth::check()) {
-            return $this->redirect(route('platform.dashboard', ['subdomain' => explode('.', request()->getHost())[0]]), navigate: true);
-        }
-
         return view('livewire.auth.login')->layout('livewire.layouts.auth', [
             'title' => $this->title,
             'registerEnabled' => $this->registerEnabled

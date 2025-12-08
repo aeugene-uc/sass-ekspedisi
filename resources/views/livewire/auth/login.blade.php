@@ -1,7 +1,7 @@
 <form wire:submit.prevent="login" class="max-w-[90vw] w-md mx-auto">
     <div class="card shadow-lg p-8 flex flex-col space-y-6">
         <div class="flex justify-center">
-            <h3 class="font-semibold text-2xl">{{ $title }}</h3>
+            <h3 class="font-semibold text-2xl text-center">{{ $title }}</h3>
         </div>
 
         @error('loginError')

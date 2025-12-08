@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'platform.admin.access' => \App\Http\Middleware\PlatformAdminAccess::class,
+            'check.subdomain' => \App\Http\Middleware\CheckSubdomain::class,
+            'perusahaan.login.access' => \App\Http\Middleware\PerusahaanLoginAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

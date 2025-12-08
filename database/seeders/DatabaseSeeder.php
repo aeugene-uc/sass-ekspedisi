@@ -11,22 +11,25 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('perusahaan')->insert([
-            ['id' => 1, 'nama' => 'Logistik Nusantara Express', 'logo' => 'logo_ln_express.png'],
-            ['id' => 2, 'nama' => 'Cargo Kilat Indonesia', 'logo' => 'logo_cki.png']
+           ['id' => 1, 'nama' => 'Logistik Nusantara Express', 'logo' => 'logo_ln_express.png', 'subdomain' => 'logistiknusantara'],
+            ['id' => 2, 'nama' => 'Cargo Kilat Indonesia', 'logo' => 'logo_cki.png', 'subdomain' => 'cargokilat'],
         ]);
 
         DB::table('otorisasi')->insert([
-            ['id' => 1, 'nama' => 'manage_dashboard'],
-            ['id' => 2, 'nama' => 'manage_orders'],
-            ['id' => 3, 'nama' => 'view_reports'],
-            ['id' => 4, 'nama' => 'driver_app_access'],
+            ['id' => 1, 'nama' => 'Pemilik'],
+            ['id' => 2, 'nama' => 'Kurir'],
+            ['id' => 3, 'nama' => 'Buku Kasus'],
+            ['id' => 4, 'nama' => 'Laporan Keuangan'],
+            ['id' => 5, 'nama' => 'Verifikasi Pengiriman'],
+            ['id' => 6, 'nama' => 'Daftar Muat'],
+            ['id' => 7, 'nama' => 'Inventori'],
         ]);
 
         DB::table('peran_users')->insert([
             ['id' => 1, 'nama' => 'Super Admin', 'is_platform_admin' => true, 'perusahaan_id' => null],
             ['id' => 2, 'nama' => 'Admin Operasional', 'is_platform_admin' => false, 'perusahaan_id' => 1],
             ['id' => 3, 'nama' => 'Kurir Driver', 'is_platform_admin' => false, 'perusahaan_id' => 1],
-            ['id' => 4, 'nama' => 'Customer', 'is_platform_admin' => false, 'perusahaan_id' => null]
+            ['id' => 4, 'nama' => 'Customer', 'is_platform_admin' => false, 'perusahaan_id' => 2]
         ]);
 
         DB::table('peran_user_otorisasi')->insert([

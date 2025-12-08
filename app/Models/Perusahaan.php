@@ -13,7 +13,7 @@ class Perusahaan extends Model
 
     protected $table = 'perusahaan';
 
-    protected $fillable = ['nama', 'logo'];
+    protected $fillable = ['nama', 'logo', 'subdomain'];
 
     public function counters()
     {

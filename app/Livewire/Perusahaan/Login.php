@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Platform;
+namespace App\Livewire\Perusahaan;
 
+use App\Models\Perusahaan;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,10 @@ class Login extends Component
 
     public function mount()
     {
-        $this->title = 'Platform Admin Login';
-        $this->registerEnabled = false;
+        $subdomain = explode('.', request()->getHost())[0];
+
+        $this->title = 'Login ke ' . Perusahaan::where('subdomain', $subdomain)->first()->nama ?? 'Login';
+        $this->registerEnabled = true;
     }
 
 
@@ -31,6 +34,7 @@ class Login extends Component
             'password.required' => 'Password harus diisi.',
         ]);
 
+        // Lakukan autentikasi
         $credentials = [
             'email' => $this->email,
             'password' => $this->password,
@@ -42,8 +46,10 @@ class Login extends Component
         }
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
+        $currentSubdomain = explode('.', request()->getHost())[0];
 
-        if (!$user->peran->is_platform_admin) {
+        if (!$user->peran->is_platform_admin && 
+            ($user->peran->perusahaan_id === null || $user->peran->perusahaan?->subdomain !== $currentSubdomain)) {
             $this->password = '';
             return $this->addError('loginError', 'Email atau password salah.');
         }
@@ -51,13 +57,13 @@ class Login extends Component
         Auth::login($user);
         session()->regenerate();
 
-        return $this->redirect(route('platform.dashboard'), navigate: true);
+        return $this->redirect(route('perusahaan.dashboard', ['subdomain' => explode('.', request()->getHost())[0]]), navigate: true);
     }
 
     public function render()
     {
         if (Auth::check()) {
-            return $this->redirect(route('platform.dashboard', ['subdomain' => explode('.', request()->getHost())[0]]), navigate: true);
+            return $this->redirect(route('perusahaan.dashboard', ['subdomain' => explode('.', request()->getHost())[0]]), navigate: true);
         }
 
         return view('livewire.auth.login')->layout('livewire.layouts.auth', [

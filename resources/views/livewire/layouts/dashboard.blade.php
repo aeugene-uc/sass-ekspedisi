@@ -35,7 +35,7 @@
                                     <a
                                         wire:navigate
                                         href="{{ $url }}"
-                                        class="hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
+                                        class="mb-3 hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
                                     >
                                         {{ $name }}
                                     </a>
@@ -57,7 +57,7 @@
                         <a
                             wire:navigate
                             href="{{ $url }}"
-                            class="hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
+                            class="mb-3 hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
                         >
                             {{ $name }}
                         </a>
