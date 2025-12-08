@@ -48,9 +48,9 @@
         </div>
     </div>
 
-    <div class="flex-1 overflow-auto">
+    <div class="flex-1 flex overflow-hidden">
         {{-- Sidebar md --}}
-        <div class="w-64 h-full bg-neutral hidden sm:flex">
+        <div class="w-64 h-full bg-neutral hidden sm:flex overflow-y-auto">
             <ul class="menu menu-lg w-full">
                 @foreach ($links as $name => $url)
                     <li>
@@ -66,7 +66,7 @@
             </ul>
         </div>
 
-        <div class="flex-1 flex flex-col bg-base-100">
+        <div class="flex-1 flex flex-col bg-base-100 overflow-y-auto p-8">
             {{ $slot }}
         </div>
     </div>

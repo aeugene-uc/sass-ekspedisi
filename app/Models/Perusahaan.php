@@ -11,6 +11,8 @@ class Perusahaan extends Model
 
     public $timestamps = false;
 
+    protected $table = 'perusahaan';
+
     protected $fillable = ['nama', 'logo'];
 
     public function counters()

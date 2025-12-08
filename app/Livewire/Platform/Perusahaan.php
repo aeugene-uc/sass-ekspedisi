@@ -4,19 +4,18 @@ namespace App\Livewire\Platform;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use App\Livewire\Dashboard\DashboardComponent;
+use App\Livewire\Platform\DashboardPlatformComponent;
+use App\Models\Perusahaan as ModelsPerusahaan;
+use Livewire\WithPagination;
 
-class Perusahaan extends DashboardComponent
+class Perusahaan extends DashboardPlatformComponent
 {
-    #[Layout('livewire.layouts.dashboard')]
+    use WithPagination;
+
     public function render()
     {
-        return view('livewire.platform.perusahaan')
-            ->layoutData([
-                'title' => 'Platform Admin Dashboard',
-                'links' => [
-                    'Perusahaan' => route('platform.perusahaan')
-                ]
-            ]);
+        return $this->viewExtends('livewire.platform.perusahaan', [
+            'perusahaan' => ModelsPerusahaan::paginate(10)
+        ]);
     }
 }

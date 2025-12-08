@@ -33,7 +33,7 @@ class Login extends Component
 
         // Lakukan autentikasi
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            $this->password = '';
+            $this->password = 'sex';
             return $this->addError('loginError', 'Email atau password salah.');
         }
 
