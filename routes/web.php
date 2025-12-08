@@ -26,6 +26,9 @@ Route::domain(config('app.domain'))->group(function () {
 
         Route::get('/laporan-keuangan', Platform\LaporanKeuangan::class)
             ->name('platform.laporan-keuangan');
+
+        Route::get('/component-name', Platform\ComponentName::class)
+            ->name('platform.component-name');
     });
 });
 
