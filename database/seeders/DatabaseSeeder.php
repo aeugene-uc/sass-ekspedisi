@@ -89,11 +89,6 @@ class DatabaseSeeder extends Seeder
             ['id' => 3, 'kasus' => 'Penerima Menolak Barang'],
         ]);
 
-        DB::table('jangkauan')->insert([
-            ['id' => 1, 'nama' => 'Jabodetabek'],
-            ['id' => 2, 'nama' => 'Jawa-Bali'],
-            ['id' => 3, 'nama' => 'Nasional'],
-        ]);
 
         DB::table('jenis_kendaraan')->insert([
             ['id' => 1, 'jenis' => 'Motor'],

@@ -56,6 +56,9 @@ Route::domain('{subdomain}.' . config('app.domain'))
 
             Route::get('/status-pesanan', Perusahaan\PeranUser::class)
                 ->name('perusahaan.status-pesanan');
+
+            Route::get('/jangkauan', Perusahaan\PeranUser::class)
+                ->name('perusahaan.jangkauan');
         });
     });
 });

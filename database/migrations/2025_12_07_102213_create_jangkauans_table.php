@@ -10,6 +10,10 @@ return new class extends Migration {
         Schema::create('jangkauan', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->unique();
+
+            $table->foreignId('perusahaan_id')
+                ->constrained('perusahaan')
+                ->onDelete('cascade');
         });
     }
 

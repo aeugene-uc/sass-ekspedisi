@@ -8,6 +8,6 @@ class StatusPesananIndex extends Component
 {
     public function render()
     {
-        return view('livewire.platform.status-pesanan-index');
+        return view('livewire.perusahaan.status-pesanan');
     }
 }
