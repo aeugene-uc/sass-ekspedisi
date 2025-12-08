@@ -51,8 +51,8 @@ Route::domain('{subdomain}.' . config('app.domain'))
              })
                 ->name('perusahaan.dashboard');           
 
-            Route::get('/peran-user', Perusahaan\PeranUser::class)
-                ->name('perusahaan.peran-user');
+            Route::get('/peran-index', Perusahaan\PeranUser::class)
+                ->name('perusahaan.peran-index');
         });
     });
 });
