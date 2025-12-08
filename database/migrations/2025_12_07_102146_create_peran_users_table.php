@@ -10,8 +10,8 @@ return new class extends Migration {
         Schema::create('peran_users', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->unique();
-            $table->boolean('is_platform_admin')->default(false);
-            $table->foreignId('perusahaan_id')->nullable()->constrained('perusahaan');
+            // $table->boolean('is_platform_admin')->default(false);
+            // $table->foreignId('perusahaan_id')->nullable()->constrained('perusahaan');
         });
     }
 
