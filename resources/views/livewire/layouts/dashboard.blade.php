@@ -9,10 +9,10 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="flex flex-col w-screen h-screen overflow-hidden">
     <div class="navbar bg-neutral shadow-sm">
         <div class="flex-1">
-            <a class="btn btn-ghost text-xl text-white">{{ $title }}</a>
+            <h1 class="text-xl text-white font-semibold p-3">{{ $title }}</h1>
         </div>
         <div class="flex-none">
             <div class="drawer drawer-end">
@@ -27,17 +27,49 @@
                 </div>
                 <div class="drawer-side">
                     <label for="sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
-                    <h1>Navigasi</h1>
-                    <ul class="menu bg-base-200 min-h-full w-80 p-4">
-                        <li><a>Sidebar Item 1</a></li>
-                        <li><a>Sidebar Item 2</a></li>
-                    </ul>
+                    <div class="bg-neutral min-h-full w-80 flex flex-col">
+                        <h1 class="text-white text-xl p-4">Navigasi</h1>
+                        <ul class="menu menu-lg w-full">
+                            @foreach ($links as $name => $url)
+                                <li>
+                                    <a
+                                        wire:navigate
+                                        href="{{ $url }}"
+                                        class="hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
+                                    >
+                                        {{ $name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{ $slot }}
+    <div class="flex-1 overflow-auto">
+        {{-- Sidebar md --}}
+        <div class="w-64 h-full bg-neutral hidden sm:flex">
+            <ul class="menu menu-lg w-full">
+                @foreach ($links as $name => $url)
+                    <li>
+                        <a
+                            wire:navigate
+                            href="{{ $url }}"
+                            class="hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
+                        >
+                            {{ $name }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+
+        <div class="flex-1 flex flex-col bg-base-100">
+            {{ $slot }}
+        </div>
+    </div>
 
     @livewireScripts
 </body>

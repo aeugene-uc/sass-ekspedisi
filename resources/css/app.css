@@ -7,6 +7,8 @@
   prefersdark: false;
   color-scheme: light;
 
+  --color-nav-active: rgba(255, 255, 255, 0.1);
+
   /* ---------------------------
      Bootstrap-like Backgrounds
      --------------------------- */

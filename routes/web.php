@@ -17,8 +17,12 @@ Route::domain(config('app.domain'))->group(function () {
         Route::get('/login', Platform\Login::class)
             ->name('platform.login');
 
-        Route::get('/', Platform\Dashboard::class)
-            ->name('platform.dashboard');
+        Route::get('/', function() {
+            return redirect()->route('platform.perusahaan');
+        })->name('platform.dashboard');
+
+        Route::get('/perusahaan', Platform\Perusahaan::class)
+            ->name('platform.perusahaan');
     });
 });
 
