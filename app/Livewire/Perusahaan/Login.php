@@ -48,8 +48,8 @@ class Login extends Component
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
         $currentSubdomain = explode('.', request()->getHost())[0];
 
-        if (!$user->peran->is_platform_admin && 
-            ($user->peran->perusahaan_id === null || $user->peran->perusahaan?->subdomain !== $currentSubdomain)) {
+        if (!$user->is_platform_admin && 
+            ($user->perusahaan_id === null || $user->perusahaan?->subdomain !== $currentSubdomain)) {
             $this->password = '';
             return $this->addError('loginError', 'Email atau password salah.');
         }

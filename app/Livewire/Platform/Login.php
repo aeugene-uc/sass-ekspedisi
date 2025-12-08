@@ -43,7 +43,7 @@ class Login extends Component
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
-        if (!$user->peran->is_platform_admin) {
+        if (!$user->is_platform_admin) {
             $this->password = '';
             return $this->addError('loginError', 'Email atau password salah.');
         }

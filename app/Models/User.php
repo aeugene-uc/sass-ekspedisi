@@ -12,7 +12,9 @@ class User extends Authenticatable
         'full_name',
         'email',
         'password',
-        'peran_id'
+        'peran_id',
+        'perusahaan_id',
+        'is_platform_admin'
         // add other FK fields here
     ];
 
@@ -28,6 +30,11 @@ class User extends Authenticatable
     public function peran()
     {
         return $this->belongsTo(PeranUser::class, 'peran_id');
+    }
+
+    public function perusahaan()
+    {
+        return $this->belongsTo(Perusahaan::class);
     }
 
     public function pesanan()

@@ -63,7 +63,7 @@ class PerusahaanLoginAccess
         }
 
         // Tenant validation: ensure user belongs to correct subdomain
-        if ($user && !$user->peran->is_platform_admin && ($user->peran->perusahaan?->subdomain !== $subdomain)) {
+        if ($user && !$user->is_platform_admin && ($user->perusahaan?->subdomain !== $subdomain)) {
             Auth::logout();
             return redirect()->route('perusahaan.login', ['subdomain' => $subdomain]);
         }

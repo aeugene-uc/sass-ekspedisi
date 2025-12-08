@@ -11,10 +11,13 @@ class Jangkauan extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['nama'];
+    protected $fillable = [
+        'nama',
+        'perusahaan_id',
+    ];
 
-    public function layanan()
+    public function perusahaan()
     {
-        return $this->belongsToMany(Layanan::class, 'layanan_jangkauan', 'jangkauan_id', 'layanan_id');
+        return $this->belongsTo(Perusahaan::class);
     }
 }

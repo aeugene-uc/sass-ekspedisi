@@ -11,24 +11,10 @@ class PeranUser extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'nama',
-        'is_platform_admin',
-        'perusahaan_id',
-    ];
-
-    public function perusahaan()
-    {
-        return $this->belongsTo(Perusahaan::class);
-    }
+    protected $fillable = ['nama'];
 
     public function users()
     {
         return $this->hasMany(User::class, 'peran_id');
-    }
-
-    public function otorisasi()
-    {
-        return $this->belongsToMany(Otorisasi::class, 'peran_user_otorisasi', 'peran_id', 'otorisasi_id');
     }
 }

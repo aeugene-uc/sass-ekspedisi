@@ -14,7 +14,9 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('is_platform_admin')->default(false);
             $table->foreignId('peran_id')->constrained('peran_users');
+            $table->foreignId('perusahaan_id')->nullable()->constrained('perusahaan');
 
             // Optional FK examples:
             // $table->foreignId('company_id')->nullable()->constrained();
