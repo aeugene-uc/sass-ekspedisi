@@ -29,4 +29,9 @@ class Perusahaan extends Model
     {
         return $this->hasMany(PeranUser::class);
     }
+
+    public function jangkauan() 
+    {
+        return $this->hasMany(Jangkauan::class);
+    }
 }
