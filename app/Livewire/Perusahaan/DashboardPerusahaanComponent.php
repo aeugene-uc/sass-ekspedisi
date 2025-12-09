@@ -35,6 +35,8 @@ class DashboardPerusahaanComponent extends Component
                     'Peran User' => route('perusahaan.peran-user', ['subdomain' => $subdomain]),
                     'Kendaraan' => route('perusahaan.kendaraan', ['subdomain' => $subdomain]),
                     'Counter' => route('perusahaan.counter', ['subdomain' => $subdomain]),
+                    'Jangkauan' => route('perusahaan.jangkauan', ['subdomain' => $subdomain]),
+                    // 'Layanan' => route('perusahaan.layanan', ['subdomain' => $subdomain]),
                     // 'Laporan Keuangan' => route('platform.laporan-keuangan')
                 ]
             ]);
