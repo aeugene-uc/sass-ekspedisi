@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('buku_kasus', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pesanan_id')->constrained('pesanan')->cascadeOnDelete();
-            $table->foreignId('kasus_id')->constrained('kasus')->cascadeOnDelete();
+            $table->text('kasus');
             $table->boolean('selesai')->default(false);
         });
     }

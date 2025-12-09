@@ -7,6 +7,16 @@ use Livewire\Attributes\Layout;
 
 class DashboardPlatformComponent extends Component
 {
+    public $modalSaveVisible = false;
+    public $modalDeleteVisible = false;
+
+    public $modalTitle;
+    public $query;
+
+    public function search() {
+        $this->resetPage();
+    }
+
     #[Layout('livewire.layouts.dashboard')]
     public function viewExtends($view, $viewData)
     {

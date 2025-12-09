@@ -9,6 +9,8 @@ class Kendaraan extends Model
 {
     use HasFactory;
 
+    public $table = 'kendaraan';
+
     public $timestamps = false;
 
     protected $fillable = [

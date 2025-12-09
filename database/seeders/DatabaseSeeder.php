@@ -83,11 +83,11 @@ class DatabaseSeeder extends Seeder
             ['id' => 5, 'status' => 'Dibatalkan'],
         ]);
 
-        DB::table('kasus')->insert([
-            ['id' => 1, 'kasus' => 'Barang Rusak Saat Diterima'],
-            ['id' => 2, 'kasus' => 'Alamat Tidak Ditemukan'],
-            ['id' => 3, 'kasus' => 'Penerima Menolak Barang'],
-        ]);
+        // DB::table('kasus')->insert([
+        //     ['id' => 1, 'kasus' => 'Barang Rusak Saat Diterima'],
+        //     ['id' => 2, 'kasus' => 'Alamat Tidak Ditemukan'],
+        //     ['id' => 3, 'kasus' => 'Penerima Menolak Barang'],
+        // ]);
 
         DB::table('jangkauan')->insert([
             ['id' => 1, 'nama' => 'Jabodetabek'],
@@ -109,8 +109,8 @@ class DatabaseSeeder extends Seeder
 
         // Note: Table name in DBML is 'Counter', usually mapped to 'counters' in Laravel
         DB::table('counters')->insert([
-            ['id' => 1, 'perusahaan_id' => 1, 'alamat' => 'Jl. Sudirman No. 45, Jakarta Pusat', 'lat' => -6.2088, 'lng' => 106.8456],
-            ['id' => 2, 'perusahaan_id' => 1, 'alamat' => 'Jl. Dago No. 10, Bandung', 'lat' => -6.9175, 'lng' => 107.6191]
+            ['id' => 1, 'perusahaan_id' => 1, 'alamat' => 'Jl. Sudirman No. 45, Jakarta Pusat', 'nama' => 'Counter Sudirman', 'lat' => -6.2146, 'lng' => 106.8451],
+            ['id' => 2, 'perusahaan_id' => 1, 'alamat' => 'Jl. Dago No. 10, Bandung', 'nama' => 'Counter Dago', 'lat' => -6.8915, 'lng' => 107.6107]
         ]);
 
         DB::table('layanan')->insert([
@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('buku_kasus')->insert([
-            ['id' => 1, 'pesanan_id' => 1001, 'kasus_id' => 2, 'selesai' => false]
+            ['id' => 1, 'pesanan_id' => 1001, 'kasus' => 'Toko Tutup', 'selesai' => false]
         ]);
 
         // DB::table('perusahaan')->insert([

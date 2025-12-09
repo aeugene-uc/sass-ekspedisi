@@ -53,6 +53,12 @@ Route::domain('{subdomain}.' . config('app.domain'))
 
             Route::get('/peran-user', Perusahaan\PeranUser::class)
                 ->name('perusahaan.peran-user');
+
+            Route::get('/kendaraan', Perusahaan\Kendaraan::class)
+                ->name('perusahaan.kendaraan');
+
+            Route::get('/counter', Perusahaan\Counter::class)
+                ->name('perusahaan.counter');
         });
     });
 });

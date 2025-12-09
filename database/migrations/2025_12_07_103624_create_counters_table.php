@@ -11,8 +11,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('perusahaan_id')->constrained('perusahaan');
             $table->string('alamat');
-            $table->decimal('lat', 10, 7);
-            $table->decimal('lng', 10, 7);
+            $table->string('nama');
+            $table->decimal('lat');
+            $table->decimal('lng');
         });
     }
 

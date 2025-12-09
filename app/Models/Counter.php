@@ -11,7 +11,9 @@ class Counter extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['perusahaan_id', 'alamat', 'lat', 'lng'];
+    public $table = 'counters';
+
+    protected $fillable = ['perusahaan_id', 'nama', 'alamat', 'lat', 'lng'];
 
     public function perusahaan()
     {

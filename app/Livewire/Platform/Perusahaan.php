@@ -16,24 +16,15 @@ class Perusahaan extends DashboardPlatformComponent
 {
     use WithPagination, WithFileUploads;
 
-    public $modalSaveVisible = false;
-    public $modalDeleteVisible = false;
-
-    public $modalTitle;
-    public $query;
-
     public $id;
     public $nama;
     public $logo;
 
     protected $rules = [
+        'id' => 'nullable|integer',
         'nama' => 'required|string|max:255',
         'logo' => 'nullable|image', // 1MB max
     ];
-
-    public function search() {
-        $this->resetPage();
-    }
 
     public function closeModal() {
         $this->modalSaveVisible = false;
