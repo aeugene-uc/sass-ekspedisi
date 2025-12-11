@@ -1,3 +1,21 @@
+@php
+function renderMenu($links) {
+    echo '<ul class="menu menu-lg w-full">';
+    foreach ($links as $name => $value) {
+        if (is_array($value)) {
+            echo '<li><details open><summary class="hover:bg-(--color-nav-active) hover:text-primary text-secondary">' . $name . '</summary>';
+            renderMenu($value);
+            echo '</details></li>';
+        } else {
+            $active = request()->url() === $value ? 'bg-(--color-nav-active) text-primary' : 'text-secondary';
+            echo '<li><a wire:navigate href="' . $value . '" class="mb-3 hover:bg-(--color-nav-active) hover:text-primary ' . $active . '">' . $name . '</a></li>';
+        }
+    }
+    echo '</ul>';
+}
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="en" data-theme="mytheme">
 <head>
@@ -31,19 +49,7 @@
                     <label for="sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
                     <div class="bg-neutral min-h-full w-80 flex flex-col">
                         <h1 class="text-white text-xl p-4">Navigasi</h1>
-                        <ul class="menu menu-lg w-full">
-                            @foreach ($links as $name => $url)
-                                <li>
-                                    <a
-                                        wire:navigate
-                                        href="{{ $url }}"
-                                        class="mb-3 hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
-                                    >
-                                        {{ $name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                        {{ renderMenu($links) }}
                     </div>
                 </div>
             </div>
@@ -53,19 +59,7 @@
     <div class="flex-1 flex overflow-hidden">
         {{-- Sidebar md --}}
         <div class="w-64 h-full bg-neutral hidden sm:flex overflow-y-auto">
-            <ul class="menu menu-lg w-full">
-                @foreach ($links as $name => $url)
-                    <li>
-                        <a
-                            wire:navigate
-                            href="{{ $url }}"
-                            class="mb-3 hover:bg-(--color-nav-active) hover:text-primary {{ request()->url() === $url ? 'bg-(--color-nav-active) text-primary' : 'text-secondary' }}"
-                        >
-                            {{ $name }}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
+            {{ renderMenu($links) }}
         </div>
 
         <div class="flex-1 flex flex-col bg-base-100 overflow-y-auto p-8">

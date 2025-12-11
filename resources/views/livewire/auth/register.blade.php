@@ -18,28 +18,28 @@
             <label class="label">
                 <span class="label-text">Full Name *</span>
             </label>
-            <input type="text" placeholder="Full Name" wire:model="name" class="input input-bordered w-full" />
+            <input type="text" placeholder="Full Name" wire:model="full_name" class="input input-bordered w-full" required />
         </div>
 
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">Email *</span>
             </label>
-            <input type="email" placeholder="Email" wire:model="email" class="input input-bordered w-full" />
+            <input type="email" placeholder="Email" wire:model="email" class="input input-bordered w-full" required />
         </div>
 
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">Password *</span>
             </label>
-            <input type="password" placeholder="Password" wire:model="password" class="input input-bordered w-full" />
+            <input type="password" placeholder="Password" wire:model="password" class="input input-bordered w-full" required />
         </div>
 
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">Confirm Password *</span>
             </label>
-            <input type="password" placeholder="Confirm Password" wire:model="password_confirmation" class="input input-bordered w-full" />
+            <input type="password" placeholder="Confirm Password" wire:model="password_confirmation" class="input input-bordered w-full" required />
         </div>
 
         <button type="submit" class="btn btn-primary w-full">

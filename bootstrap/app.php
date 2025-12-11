@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'platform.admin.access' => \App\Http\Middleware\PlatformAdminAccess::class,
             'check.subdomain' => \App\Http\Middleware\CheckSubdomain::class,
+            'perusahaan.noauth' => \App\Http\Middleware\PerusahaanNoAuth::class,
             'perusahaan.login.access' => \App\Http\Middleware\PerusahaanLoginAccess::class,
         ]);
     })

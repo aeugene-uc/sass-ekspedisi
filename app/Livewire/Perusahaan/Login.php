@@ -5,20 +5,22 @@ namespace App\Livewire\Perusahaan;
 use App\Models\Perusahaan;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class Login extends Component
 {
     public $title;
     public $registerEnabled;
+    public $subdomain;
 
     public $email;
     public $password;
 
     public function mount()
     {
-        $subdomain = explode('.', request()->getHost())[0];
+        $this->subdomain = explode('.', request()->getHost())[0];
 
-        $this->title = 'Login ke ' . Perusahaan::where('subdomain', $subdomain)->first()->nama ?? 'Login';
+        $this->title = 'Login ke ' . Perusahaan::where('subdomain', $this->subdomain)->first()->nama ?? 'Login';
         $this->registerEnabled = true;
     }
 
@@ -62,10 +64,6 @@ class Login extends Component
 
     public function render()
     {
-        if (Auth::check()) {
-            return $this->redirect(route('perusahaan.dashboard', ['subdomain' => explode('.', request()->getHost())[0]]), navigate: true);
-        }
-
         return view('livewire.auth.login')->layout('livewire.layouts.auth', [
             'title' => $this->title,
             'registerEnabled' => $this->registerEnabled

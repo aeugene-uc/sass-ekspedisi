@@ -23,6 +23,12 @@ class CheckSubdomain
             abort(404); // or redirect somewhere
         }
 
-        return $next($request);
+        $response = $next($request);
+
+        if (is_null($response)) {
+            throw new \Exception('Next middleware returned null!');
+        }
+
+        return $response;
     }
 }

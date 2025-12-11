@@ -12,6 +12,8 @@
 <body>
     <div class="h-screen w-screen flex justify-center bg-gray-100 pt-24 overflow-y-auto">
         {{ $slot }}
+
+        <div class="h-24"></div>
     </div>
 
     @livewireScripts

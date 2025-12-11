@@ -19,17 +19,19 @@ class Perusahaan extends DashboardPlatformComponent
     public $id;
     public $nama;
     public $logo;
+    public $subdomain;
 
     protected $rules = [
         'id' => 'nullable|integer',
         'nama' => 'required|string|max:255',
         'logo' => 'nullable|image', // 1MB max
+        'subdomain' => 'required|string|max:255',
     ];
 
     public function closeModal() {
         $this->modalSaveVisible = false;
         $this->modalDeleteVisible = false;
-        $this->reset(['nama', 'logo', 'id']);
+        $this->reset(['nama', 'logo', 'id', 'subdomain']);
     }
 
     // Delete
@@ -63,7 +65,7 @@ class Perusahaan extends DashboardPlatformComponent
     // Save (CREATE + UPDATE)
     public function openModalCreate() {
         $this->modalSaveVisible = true;
-        $this->modalTitle = 'Tambah Perusahaan';
+        $this->modalTitle = 'Daftarkan Perusahaan';
     }
 
     public function openModalUpdate($id) {
@@ -73,6 +75,7 @@ class Perusahaan extends DashboardPlatformComponent
         $record = ModelsPerusahaan::findOrFail($id);
         $this->id = $record->id;
         $this->nama = $record->nama;
+        $this->subdomain = $record->subdomain;
         $this->logo = null;
     }
 
@@ -85,6 +88,7 @@ class Perusahaan extends DashboardPlatformComponent
                 : new ModelsPerusahaan();
 
             $record->nama = $this->nama;
+            $record->subdomain = $this->subdomain;
 
             if ($this->logo) {
                 if ($this->id && $record->logo) {

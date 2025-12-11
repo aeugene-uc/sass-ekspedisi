@@ -18,10 +18,11 @@ class DatabaseSeeder extends Seeder
 
         // 2. PeranUser (UPDATED: Removed extra columns not in DBML)
         DB::table('peran_users')->insert([
-            ['id' => 1, 'nama' => 'Super Admin'],
+            ['id' => 1, 'nama' => 'Platform Admin'],
             ['id' => 2, 'nama' => 'Admin Operasional'],
             ['id' => 3, 'nama' => 'Kurir Driver'],
-            ['id' => 4, 'nama' => 'Customer']
+            ['id' => 4, 'nama' => 'Mandor'],
+            ['id' => 5, 'nama' => 'Customer']
         ]);
 
         // 3. Users (KEPT AS IS)
@@ -58,7 +59,7 @@ class DatabaseSeeder extends Seeder
                 'full_name' => 'Rina Customer', 
                 'email' => 'rina@gmail.com', 
                 'password' => Hash::make('password123'), 
-                'peran_id' => 4, 
+                'peran_id' => 5, 
                 'is_platform_admin' => false, 
                 'perusahaan_id' => 2 // Assigned to Cargo Kilat (ID 2)
             ],

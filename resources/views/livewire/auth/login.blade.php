@@ -14,14 +14,14 @@
             <label class="label">
                 <span class="label-text">Email *</span>
             </label>
-            <input type="email" placeholder="Email" wire:model="email" required class="input input-bordered w-full" />
+            <input type="email" placeholder="Email" wire:model="email" required class="input input-bordered w-full" required />
         </div>
 
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">Password *</span>
             </label>
-            <input type="password" placeholder="Password" wire:model="password" required class="input input-bordered w-full" />
+            <input type="password" placeholder="Password" wire:model="password" required class="input input-bordered w-full" required />
         </div>
 
         <button type="submit" class="btn btn-primary w-full">

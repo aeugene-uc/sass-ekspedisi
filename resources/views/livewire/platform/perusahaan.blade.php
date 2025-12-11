@@ -14,6 +14,7 @@
                         <th>Id</th>
                         <th>Nama</th>
                         <th>Logo</th>
+                        <th>Subdomain</th>
                         <th>Link</th>
                         <th></th>
                     </tr>
@@ -30,14 +31,15 @@
                                     N/A
                                 @endif
                             </td>
+                            <td>{{ $perusahaan->subdomain }}</td>
                             <td>
                                 <a href="http://{{ $perusahaan->subdomain . '.' . config('app.domain') }}" target="_blank" class="link link-primary">
                                     Link
                                 </a>
                             </td>
                             <td class="inline-flex gap-2">
-                                <button class="btn btn btn-primary" wire:click="openModalUpdate({{ $perusahaan->id }})">Edit</button>
-                                <button class="btn btn btn-error" wire:click="openModalDelete({{ $perusahaan->id }})">Hapus</button>
+                                <button class="btn btn-primary" wire:click="openModalUpdate({{ $perusahaan->id }})">Edit</button>
+                                <button class="btn btn-error" wire:click="openModalDelete({{ $perusahaan->id }})">Hapus</button>
                             </td>
                         </tr>
                     @endforeach
@@ -71,6 +73,11 @@
             <div>
                 <label class="label mb-2">Nama Perusahaan</label>
                 <input type="text" class="input" placeholder="Nama Perusahaan" wire:model="nama"/>
+            </div>
+
+            <div>
+                <label class="label mb-2">Subdomain</label>
+                <input type="text" class="input" placeholder="Subdomain" wire:model="subdomain"/>
             </div>
             
             <div>

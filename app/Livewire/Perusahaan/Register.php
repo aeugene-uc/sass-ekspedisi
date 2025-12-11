@@ -3,65 +3,63 @@
 namespace App\Livewire\Perusahaan;
 
 use App\Models\Perusahaan;
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
-class Login extends Component
+class Register extends Component
 {
     public $title;
     public $registerEnabled;
+    public $subdomain;
 
+    public $full_name;
     public $email;
     public $password;
+    public $password_confirmation;
 
     public function mount()
     {
-        $subdomain = explode('.', request()->getHost())[0];
+        $this->subdomain = explode('.', request()->getHost())[0];
 
-        $this->title = 'Login ke ' . Perusahaan::where('subdomain', $subdomain)->first()->nama ?? 'Login';
+        $this->title = 'Daftar ke ' . Perusahaan::where('subdomain', $this->subdomain)->first()->nama ?? 'Login';
         $this->registerEnabled = true;
     }
 
 
-    public function login()
+    public function register()
     {
         $this->validate([
+            'full_name' => 'required|string|max:255',
             'email' => 'required|email',
             'password' => 'required',
+            'password_confirmation' => 'required|same:password',
         ], [
-            'email.required' => 'Email harus diisi.',
-            'email.email'    => 'Format email tidak valid.',
-            'password.required' => 'Password harus diisi.',
+            'password_confirmation.same' => 'Password harus sama dengan konfirmasi password.',
         ]);
 
-        // Lakukan autentikasi
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            $this->password = '';
-            return $this->addError('loginError', 'Email atau password salah.');
-        }
-
-        $userPeran = Auth::user()->peran;
         $currentSubdomain = explode('.', request()->getHost())[0];
 
-        if (
-            !$userPeran->is_platform_admin && (
-                $userPeran->perusahaan_id === null ||
-                $userPeran->perusahaan->subdomain !== $currentSubdomain
-            )
-        ) {
-            Auth::logout();
-            $this->password = '';
-            return $this->addError('loginError', 'Email atau password salah.');
-        }
+        $perusahaan_id = Perusahaan::where('subdomain', $currentSubdomain)->first()->id;
+        $user = new User();
+        $user->perusahaan_id = $perusahaan_id;
+        $user->full_name = $this->full_name;
+        $user->email = $this->email;
+        $user->password = bcrypt($this->password);
+        $user->is_platform_admin = false;
+        $user->peran_id = 5; // Default peran: customer
+        $user->save();
+
+        Auth::login($user);
 
         session()->regenerate();
 
-        return $this->redirect(route('perusahaan.dashboard'), navigate: true);
+        return $this->redirect(route('perusahaan.dashboard', ['subdomain' => $currentSubdomain]), navigate: true);
     }
 
     public function render()
     {
-        return view('livewire.auth.login')->layout('livewire.layouts.auth', [
+        return view('livewire.auth.register')->layout('livewire.layouts.auth', [
             'title' => $this->title,
             'registerEnabled' => $this->registerEnabled
         ]);

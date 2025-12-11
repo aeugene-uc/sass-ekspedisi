@@ -36,35 +36,38 @@ Route::domain('{subdomain}.' . config('app.domain'))
     ->middleware(['check.subdomain']) // checks if subdomain exists
     ->group(function () {
 
-    // Login route is public
-    Route::get('/login', Perusahaan\Login::class)
-        ->name('perusahaan.login');
-
     Route::get('/', function() {
-        return redirect()->route('perusahaan.dashboard', ['subdomain' => request()->route('subdomain')]);
+        return redirect()->route('perusahaan.login', ['subdomain' => request()->route('subdomain')]);
+    });
+
+    // Login route is public
+    Route::middleware('perusahaan.noauth')->group(function () {
+        Route::get('/login', Perusahaan\Login::class)
+            ->name('perusahaan.login');
+
+        Route::get('/register', Perusahaan\Register::class)
+            ->name('perusahaan.register');
     });
 
     Route::middleware('perusahaan.login.access')->group(function () {
-        Route::prefix('admin')->group(function () {
-             Route::get('/', function() {
-                return redirect()->route('perusahaan.peran-user', ['subdomain' => request()->route('subdomain')]);
-             })
-                ->name('perusahaan.dashboard');           
+        Route::get('/dashboard', function() {
+            return redirect()->route('perusahaan.peran-user', ['subdomain' => request()->route('subdomain')]);
+        })
+        ->name('perusahaan.dashboard');           
 
-            Route::get('/peran-user', Perusahaan\PeranUser::class)
-                ->name('perusahaan.peran-user');
+        Route::get('/peran-user', Perusahaan\PeranUser::class)
+            ->name('perusahaan.peran-user');
 
-            Route::get('/kendaraan', Perusahaan\Kendaraan::class)
-                ->name('perusahaan.kendaraan');
+        Route::get('/kendaraan', Perusahaan\Kendaraan::class)
+            ->name('perusahaan.kendaraan');
 
-            Route::get('/counter', Perusahaan\Counter::class)
-                ->name('perusahaan.counter');
+        Route::get('/counter', Perusahaan\Counter::class)
+            ->name('perusahaan.counter');
 
-            Route::get('/status-pesanan', Perusahaan\StatusPesananIndex::class)
-                ->name('perusahaan.status-pesanan');
+        Route::get('/status-pesanan', Perusahaan\StatusPesananIndex::class)
+            ->name('perusahaan.status-pesanan');
 
-            Route::get('/jangkauan', Perusahaan\Jangkauan::class)
-                ->name('perusahaan.jangkauan');
-        });
+        Route::get('/jangkauan', Perusahaan\Jangkauan::class)
+            ->name('perusahaan.jangkauan');
     });
 });
