@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4">
-    <h1 class="text-3xl font-bold mb-4">Jangkauan</h1>
+    <h1 class="text-3xl font-bold mb-4">Status Pesanan</h1>
 
     <form class="flex gap-2" wire:submit.prevent="search">
         <input type="text" class="input w-full" placeholder="Search" wire:model="query" />
@@ -12,35 +12,33 @@
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Nama</th>
-                        <th>Perusahaan</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($jangkauans as $jangkauan)
+                    @foreach ($statuses as $status)
                         <tr>
-                            <td>{{ $jangkauan->id }}</td>
-                            <td>{{ $jangkauan->nama }}</td>
+                            <td>{{ $status->id }}</td>
                             <td>
                                 <div class="badge badge-info">
-                                    {{ $jangkauan->perusahaan->nama ?? 'N/A' }}
+                                    {{ $status->status }}
                                 </div>
                             </td>
                             <td class="inline-flex gap-2">
-                                <button class="btn btn btn-primary" wire:click="openModalUpdate({{ $jangkauan->id }})">Edit</button>
-                                <button class="btn btn btn-error" wire:click="openModalDelete({{ $jangkauan->id }})">Hapus</button>
+                                <button class="btn btn btn-primary" wire:click="openModalUpdate({{ $status->id }})">Edit</button>
+                                <button class="btn btn btn-error" wire:click="openModalDelete({{ $status->id }})">Hapus</button>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <button class="btn w-full btn-primary mt-4" wire:click="openModalCreate">Tambah Jangkauan</button>
+        <button class="btn w-full btn-primary mt-4" wire:click="openModalCreate">Tambah Status Pesanan</button>
     </div>
 
     <div class="mt-2 flex justify-end">
-        {{ $jangkauans->links('pagination.daisyui') }}
+        {{ $statuses->links('pagination.daisyui') }}
     </div>
 
     <div class="modal {{ $modalSaveVisible ? 'modal-open' : '' }}">
@@ -61,20 +59,8 @@
             <input type="hidden" wire:model="id" />
 
             <div>
-                <label class="label mb-2">Nama Jangkauan</label>
-                <input type="text" class="input" placeholder="Nama Jangkauan" wire:model="nama"/>
-            </div>
-            
-            <div>
-                <label class="label mb-2">Perusahaan</label>
-                <select class="select" wire:model="perusahaan_id">
-                    <option value="">-- Pilih Perusahaan --</option>
-                    @foreach ($perusahaans as $perusahaan)
-                        <option value="{{ $perusahaan->id }}">
-                            {{ $perusahaan->nama }}
-                        </option>
-                    @endforeach
-                </select>
+                <label class="label mb-2">Status Pesanan</label>
+                <input type="text" class="input" placeholder="Status Pesanan" wire:model="status"/>
             </div>
 
             <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
@@ -99,7 +85,7 @@
 
             <input type="hidden" wire:model="id" />
 
-            <p>Apa Anda yakin mau menghapus jangkauan ini?</p>
+            <p>Apa Anda yakin mau menghapus status pesanan ini?</p>
 
             <button class="btn btn-error w-full mt-4" type="submit">Hapus</button>
         </form>

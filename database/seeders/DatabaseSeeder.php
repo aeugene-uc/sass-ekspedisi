@@ -96,6 +96,14 @@ class DatabaseSeeder extends Seeder
             ['id' => 3, 'jenis' => 'Truk Engkel'],
         ]);
 
+        DB::table('jangkauan')->insert([
+            ['id' => 1, 'nama' => 'Jabodetabek', 'perusahaan_id' => 1],
+            ['id' => 2, 'nama' => 'Jawa-Bali', 'perusahaan_id' => 1],
+            ['id' => 3, 'nama' => 'Nasional', 'perusahaan_id' => 1],
+            ['id' => 4, 'nama' => 'Jakarta-Bandung', 'perusahaan_id' => 2],
+            ['id' => 5, 'nama' => 'Sumatera', 'perusahaan_id' => 2],
+        ]);
+
         // 5. Assets (Kendaraan, Counter, Layanan)
         DB::table('kendaraan')->insert([
             ['id' => 1, 'plat_nomor' => 'B 1234 SJA', 'operasional' => true, 'jenis_kendaraan_id' => 2],

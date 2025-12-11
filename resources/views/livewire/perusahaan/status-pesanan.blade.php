@@ -1,14 +1,14 @@
-<div>
-    <h1 class="text-3xl font-bold mb-4">Daftar Status Pesanan</h1>
+<div class="flex flex-col gap-4">
+    <h1 class="text-3xl font-bold mb-4">Status Pesanan</h1>
 
-    <form class="flex gap-2 mb-4" wire:submit.prevent="search">
-        <input type="text" class="input w-full" placeholder="Cari Status..." wire:model="query" />
+    <form class="flex gap-2" wire:submit.prevent="search">
+        <input type="text" class="input w-full" placeholder="Search" wire:model="query" />
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <div class="w-full">
         <div class="overflow-x-auto">
-            <table class="table table-xs min-w-full">
+            <table class="table table-xs min-w-2xl">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($statuses as $status)
+                    @foreach ($statuses as $status)
                         <tr>
                             <td>{{ $status->id }}</td>
                             <td>
@@ -29,19 +29,13 @@
                                 <button class="btn btn-sm btn-ghost" disabled>Statik</button>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center py-4 text-gray-500">
-                                Tidak ada data status yang ditemukan.
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div class="mt-4 flex justify-end">
+    <div class="mt-2 flex justify-end">
         {{ $statuses->links('pagination.daisyui') }}
     </div>
 </div>

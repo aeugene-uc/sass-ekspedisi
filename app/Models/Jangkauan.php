@@ -9,6 +9,7 @@ class Jangkauan extends Model
 {
     use HasFactory;
 
+    protected $table = 'jangkauan';
     public $timestamps = false;
 
     protected $fillable = [

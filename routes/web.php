@@ -28,6 +28,9 @@ Route::domain(config('app.domain'))->group(function () {
 
             Route::get('/laporan-keuangan', Platform\LaporanKeuangan::class)
                 ->name('platform.laporan-keuangan');
+
+            Route::get('/status-pesanan', Platform\StatusPesanan::class)
+                ->name('platform.status-pesanan');
         });
     });
 });
@@ -60,10 +63,10 @@ Route::domain('{subdomain}.' . config('app.domain'))
             Route::get('/counter', Perusahaan\Counter::class)
                 ->name('perusahaan.counter');
 
-            Route::get('/status-pesanan', Perusahaan\PeranUser::class)
+            Route::get('/status-pesanan', Perusahaan\StatusPesanan::class)
                 ->name('perusahaan.status-pesanan');
 
-            Route::get('/jangkauan', Perusahaan\PeranUser::class)
+            Route::get('/jangkauan', Perusahaan\Jangkauan::class)
                 ->name('perusahaan.jangkauan');
         });
     });
