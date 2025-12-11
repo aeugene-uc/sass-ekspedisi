@@ -25,9 +25,7 @@
                                     {{ $status->status }}
                                 </div>
                             </td>
-                            <td>
-                                <button class="btn btn-sm btn-ghost" disabled>Statik</button>
-                            </td>
+                            <td></td>
                         </tr>
                     @endforeach
                 </tbody>

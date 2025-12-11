@@ -78,9 +78,10 @@ class DatabaseSeeder extends Seeder
         DB::table('status_pesanan')->insert([
             ['id' => 1, 'status' => 'Menunggu Pembayaran'],
             ['id' => 2, 'status' => 'Barang Diperiksa'],
-            ['id' => 3, 'status' => 'Dalam Pengiriman'],
-            ['id' => 4, 'status' => 'Selesai'],
-            ['id' => 5, 'status' => 'Dibatalkan'],
+            ['id' => 3, 'status' => 'Masih di Gudang'],
+            ['id' => 4, 'status' => 'Sedang di Antar'],
+            ['id' => 5, 'status' => 'Sudah Sampai'],
+            ['id' => 6, 'status' => 'Dibatalkan'],
         ]);
 
         // DB::table('kasus')->insert([
