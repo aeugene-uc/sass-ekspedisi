@@ -17,6 +17,7 @@ class Kendaraan extends Model
         'plat_nomor',
         'operasional',
         'jenis_kendaraan_id',
+        'perusahaan_id'
     ];
 
     public function jenis()
@@ -27,5 +28,10 @@ class Kendaraan extends Model
     public function daftarMuat()
     {
         return $this->hasMany(DaftarMuat::class);
+    }
+
+    public function perusahaan()
+    {
+        return $this->belongsTo(Perusahaan::class, 'perusahaan_id');
     }
 }

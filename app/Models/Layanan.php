@@ -11,6 +11,8 @@ class Layanan extends Model
 
     public $timestamps = false;
 
+    public $table = 'layanan';
+
     protected $fillable = [
         'nama',
         'gambar',

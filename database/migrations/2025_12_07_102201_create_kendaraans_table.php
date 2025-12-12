@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('plat_nomor');
             $table->boolean('operasional');
             $table->foreignId('jenis_kendaraan_id')->constrained('jenis_kendaraan');
+            $table->foreignId('perusahaan_id')->constrained('perusahaan');
         });
     }
 

@@ -105,13 +105,20 @@ class Kendaraan extends DashboardPerusahaanComponent
 
     public function render()
     {
-        $query = ModelsKendaraan::with('jenis');
+        $subdomain = $this->subdomain;
+
+        $query = ModelsKendaraan::with('jenis')
+            ->whereHas('perusahaan', function ($q) use ($subdomain) {
+                $q->where('subdomain', $subdomain);
+            });
 
         if ($this->query) {
             $query->where(function($q) {
                 $q->where('id', $this->query)
                 ->orWhere('plat_nomor', 'like', '%' . $this->query . '%')
-                ->orWhere('jenis', 'like', '%' . $this->query . '%');
+                ->orWhereHas('jenis', function($q2) {
+                    $q2->where('jenis', 'like', '%' . $this->query . '%'); // sesuaikan nama kolom
+                });
             });
         }
 

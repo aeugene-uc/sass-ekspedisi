@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('daftar_muat', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal_dibuat');
-            $table->date('tanggal_selesai')->nullable();
+            $table->datetime('tanggal_dibuat');
+            $table->datetime('tanggal_selesai')->nullable();
             $table->foreignId('counter_asal_id')->nullable()->constrained('counters');
             $table->foreignId('kendaraan_id')->constrained('kendaraan');
         });

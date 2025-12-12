@@ -11,6 +11,8 @@ class DaftarMuat extends Model
 
     public $timestamps = false;
 
+    public $table = 'daftar_muat';
+
     protected $fillable = [
         'tanggal_dibuat',
         'tanggal_selesai',

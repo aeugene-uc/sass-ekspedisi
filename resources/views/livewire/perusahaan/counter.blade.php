@@ -11,7 +11,7 @@
             <table class="table table-xs min-w-2xl">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>No.</th>
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th></th>
@@ -20,7 +20,7 @@
                 <tbody>
                     @foreach ($counters as $counter)
                         <tr>
-                            <td>{{ $counter->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $counter->nama }}</td>
                             <td>{{ $counter->alamat }}</td>
                             <td class="inline-flex gap-2">

@@ -11,19 +11,18 @@ class BukuKasus extends Model
 
     public $timestamps = false;
 
+    public $table = 'buku_kasus';
+
     protected $fillable = [
         'pesanan_id',
         'kasus_id',
         'selesai',
+        'tanggal_dibuat',
+        'tanggal_selesai',
     ];
 
     public function pesanan()
     {
         return $this->belongsTo(Pesanan::class);
-    }
-
-    public function kasus()
-    {
-        return $this->belongsTo(Kasus::class);
     }
 }

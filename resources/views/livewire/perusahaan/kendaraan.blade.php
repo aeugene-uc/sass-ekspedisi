@@ -11,7 +11,7 @@
             <table class="table table-xs min-w-2xl">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>No.</th>
                         <th>Plat Nomor</th>
                         <th>Jenis</th>
                         <th>Operasional</th>
@@ -21,13 +21,13 @@
                 <tbody>
                     @foreach ($kendaraans as $kendaraan)
                         <tr>
-                            <td>{{ $kendaraan->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $kendaraan->plat_nomor }}</td>
                             <td>{{ $kendaraan->jenis->jenis }}</td>
                             <td>{{ $kendaraan->operasional ? 'Ya' : 'Tidak' }}</td>
                             <td class="inline-flex gap-2">
-                                <button class="btn btn btn-primary" wire:click="openModalUpdate({{ $kendaraan->id }})">Edit</button>
-                                <button class="btn btn btn-error" wire:click="openModalDelete({{ $kendaraan->id }})">Hapus</button>
+                                <button class="btn btn-primary" wire:click="openModalUpdate({{ $kendaraan->id }})">Edit</button>
+                                <button class="btn btn-error" wire:click="openModalDelete({{ $kendaraan->id }})">Hapus</button>
                             </td>
                         </tr>
                     @endforeach

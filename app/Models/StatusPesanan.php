@@ -9,7 +9,7 @@ class StatusPesanan extends Model
 {
     use HasFactory;
 
-    protected $table = 'status_pesanas';
+    protected $table = 'status_pesanan';
     public $timestamps = false;
 
     protected $fillable = ['status'];

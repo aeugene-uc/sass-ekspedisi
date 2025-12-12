@@ -16,6 +16,9 @@ class Perusahaan extends DashboardPlatformComponent
 {
     use WithPagination, WithFileUploads;
 
+    public $modalGambarVisible = false;
+    public $modalGambarSrc = '';
+
     public $id;
     public $nama;
     public $logo;
@@ -28,9 +31,15 @@ class Perusahaan extends DashboardPlatformComponent
         'subdomain' => 'required|string|max:255',
     ];
 
+    public function openModalGambar($src) {
+        $this->modalGambarSrc = $src;
+        $this->modalGambarVisible = true;
+    }
+
     public function closeModal() {
         $this->modalSaveVisible = false;
         $this->modalDeleteVisible = false;
+        $this->modalGambarVisible = false;
         $this->reset(['nama', 'logo', 'id', 'subdomain']);
     }
 
@@ -123,7 +132,7 @@ class Perusahaan extends DashboardPlatformComponent
         }
 
         return $this->viewExtends('livewire.platform.perusahaan', [
-            'perusahaans' => $query->paginate(10)
+            'perusahaans' => $query->paginate(10),
         ]);
     }
 }

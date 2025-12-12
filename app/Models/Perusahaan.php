@@ -34,4 +34,8 @@ class Perusahaan extends Model
     {
         return $this->hasMany(Jangkauan::class);
     }
+
+    public function kendaraan() {
+        return $this->hasMany(Kendaraan::class);
+    }
 }

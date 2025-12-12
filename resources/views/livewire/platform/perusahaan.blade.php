@@ -25,11 +25,12 @@
                             <td>{{ $perusahaan->id }}</td>
                             <td>{{ $perusahaan->nama }}</td>
                             <td>
-                                @if ($perusahaan->logo)
-                                    <img src="{{ asset('storage/images/perusahaan/' . $perusahaan->logo) }}" alt="Logo" class="h-15 w-15 object-cover">
-                                @else
-                                    N/A
-                                @endif
+                                <img 
+                                    src="{{ asset('storage/images/perusahaan/' . $perusahaan->logo) }}" 
+                                    alt="Logo" class="h-15 w-15 object-cover"
+                                    class="cursor-pointer"
+                                    wire:click="openModalGambar('{{ asset('storage/images/perusahaan/' . $perusahaan->logo) }}')"
+                                >
                             </td>
                             <td>{{ $perusahaan->subdomain }}</td>
                             <td>
@@ -112,4 +113,5 @@
         </form>
     </div>
 
+    <x-dashboard.modal-lihat-gambar :isOpen="$modalGambarVisible" :src="$modalGambarSrc" />
 </div>

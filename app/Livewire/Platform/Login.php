@@ -56,10 +56,6 @@ class Login extends Component
 
     public function render()
     {
-        if (Auth::check()) {
-            return $this->redirect(route('platform.dashboard', ['subdomain' => explode('.', request()->getHost())[0]]), navigate: true);
-        }
-
         return view('livewire.auth.login')->layout('livewire.layouts.auth', [
             'title' => $this->title,
             'registerEnabled' => $this->registerEnabled

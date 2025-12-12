@@ -10,20 +10,23 @@ return new class extends Migration {
         Schema::create('pesanan', function (Blueprint $table) {
             $table->id();
             $table->integer('tarif');
-            $table->date('tanggal_pemesanan');
-            $table->date('tanggal_terkirim')->nullable();
+            $table->datetime('tanggal_pemesanan');
+            $table->datetime('tanggal_terkirim')->nullable();
             $table->string('foto_terkirim')->nullable();
             $table->foreignId('daftar_muat_id')->nullable()->constrained('daftar_muat');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('counter_asal_id')->nullable()->constrained('counters');
+            $table->foreignId('counter_destinasi_id')->nullable()->constrained('counters');
             $table->foreignId('metode_destinasi_pengiriman_id')->constrained('metode_destinasi_pengiriman');
             $table->foreignId('metode_asal_pengiriman_id')->constrained('metode_asal_pengiriman');
-            $table->decimal('lat_asal', 10, 7);
-            $table->decimal('lng_asal', 10, 7);
-            $table->text('alamat_asal');
-            $table->decimal('lat_destinasi', 10, 7);
-            $table->decimal('lng_destinasi', 10, 7);
-            $table->text('alamat_destinasi');
+            $table->decimal('lat_asal', 10, 7)->nullable();
+            $table->decimal('lng_asal', 10, 7)->nullable();
+            $table->text('alamat_asal')->nullable();
+            $table->decimal('lat_destinasi', 10, 7)->nullable();
+            $table->decimal('lng_destinasi', 10, 7)->nullable();
+            $table->text('alamat_destinasi')->nullable();
             $table->foreignId('status_id')->constrained('status_pesanan');
+            $table->foreignId('layanan_id')->constrained('layanan');
         });
     }
 

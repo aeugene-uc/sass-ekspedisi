@@ -55,6 +55,7 @@ Route::domain('{subdomain}.' . config('app.domain'))
         })
         ->name('perusahaan.dashboard');           
 
+        // Internal
         Route::get('/peran-user', Perusahaan\PeranUser::class)
             ->name('perusahaan.peran-user');
 
@@ -64,10 +65,14 @@ Route::domain('{subdomain}.' . config('app.domain'))
         Route::get('/counter', Perusahaan\Counter::class)
             ->name('perusahaan.counter');
 
-        Route::get('/status-pesanan', Perusahaan\StatusPesananIndex::class)
-            ->name('perusahaan.status-pesanan');
-
         Route::get('/jangkauan', Perusahaan\Jangkauan::class)
             ->name('perusahaan.jangkauan');
+
+        Route::get('/daftar-pesanan', Perusahaan\Pesanan::class)
+            ->name('perusahaan.pesanan');
+
+        // Guest
+        // Route::get('/pesan', Perusahaan\Pesan::class)
+        //     ->name('perusahaan.pesan');
     });
 });

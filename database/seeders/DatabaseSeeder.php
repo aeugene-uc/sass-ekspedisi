@@ -99,8 +99,8 @@ class DatabaseSeeder extends Seeder
 
         // 5. Assets (Kendaraan, Counter, Layanan)
         DB::table('kendaraan')->insert([
-            ['id' => 1, 'plat_nomor' => 'B 1234 SJA', 'operasional' => true, 'jenis_kendaraan_id' => 2],
-            ['id' => 2, 'plat_nomor' => 'B 9988 XYZ', 'operasional' => true, 'jenis_kendaraan_id' => 1]
+            ['id' => 1, 'plat_nomor' => 'B 1234 SJA', 'operasional' => true, 'jenis_kendaraan_id' => 2, 'perusahaan_id' => 1],
+            ['id' => 2, 'plat_nomor' => 'B 9988 XYZ', 'operasional' => true, 'jenis_kendaraan_id' => 1, 'perusahaan_id' => 2]
         ]);
 
         // Note: Table name in DBML is 'Counter', usually mapped to 'counters' in Laravel
@@ -131,8 +131,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('pesanan')->insert([
-            ['id' => 1001, 'tarif' => 50000, 'tanggal_pemesanan' => '2023-10-25', 'tanggal_terkirim' => null, 'foto_terkirim' => null, 'daftar_muat_id' => 1, 'user_id' => 4, 'metode_destinasi_pengiriman_id' => 2, 'metode_asal_pengiriman_id' => 1, 'lat_asal' => -6.2088, 'lng_asal' => 106.8456, 'alamat_asal' => 'Counter Jakarta Pusat', 'lat_destinasi' => -6.2200, 'lng_destinasi' => 106.8500, 'alamat_destinasi' => 'Apartemen Kuningan Lt 5', 'status_id' => 3],
-            ['id' => 1002, 'tarif' => 15000, 'tanggal_pemesanan' => '2023-10-26', 'tanggal_terkirim' => null, 'foto_terkirim' => null, 'daftar_muat_id' => null, 'user_id' => 4, 'metode_destinasi_pengiriman_id' => 2, 'metode_asal_pengiriman_id' => 2, 'lat_asal' => -6.2100, 'lng_asal' => 106.8200, 'alamat_asal' => 'Kantor Rina, Sudirman', 'lat_destinasi' => -6.3000, 'lng_destinasi' => 106.9000, 'alamat_destinasi' => 'Rumah Orang Tua, Bekasi', 'status_id' => 1]
+            ['id' => 1001, 'tarif' => 50000, 'tanggal_pemesanan' => '2023-10-25', 'tanggal_terkirim' => null, 'foto_terkirim' => null, 'daftar_muat_id' => 1, 'user_id' => 4, 'metode_destinasi_pengiriman_id' => 2, 'metode_asal_pengiriman_id' => 1, 'counter_destinasi_id' => null, 'counter_asal_id' => 1,'lat_asal' => -6.2088, 'lng_asal' => 106.8456, 'alamat_asal' => 'Counter Jakarta Pusat', 'lat_destinasi' => -6.2200, 'lng_destinasi' => 106.8500, 'alamat_destinasi' => 'Apartemen Kuningan Lt 5', 'status_id' => 3, 'layanan_id' => 1, 'status_id' => 1],
+            ['id' => 1002, 'tarif' => 15000, 'tanggal_pemesanan' => '2023-10-26', 'tanggal_terkirim' => null, 'foto_terkirim' => null, 'daftar_muat_id' => null, 'user_id' => 4, 'metode_destinasi_pengiriman_id' => 2, 'metode_asal_pengiriman_id' => 2, 'counter_destinasi_id' => null, 'counter_asal_id' => null,'lat_asal' => -6.2100, 'lng_asal' => 106.8200, 'alamat_asal' => 'Kantor Rina, Sudirman', 'lat_destinasi' => -6.3000, 'lng_destinasi' => 106.9000, 'alamat_destinasi' => 'Rumah Orang Tua, Bekasi', 'status_id' => 1, 'layanan_id' => 2, 'status_id' => 1]
         ]);
 
         DB::table('barang')->insert([
@@ -141,7 +141,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('buku_kasus')->insert([
-            ['id' => 1, 'pesanan_id' => 1001, 'kasus' => 'Toko Tutup', 'selesai' => false]
+            ['id' => 1, 'pesanan_id' => 1001, 'kasus' => 'Toko Tutup', 'tanggal_dibuat' => '2023-10-28', 'tanggal_selesai' => null],
+            ['id' => 2, 'pesanan_id' => 1001, 'kasus' => 'Alamat Tidak Ditemukan', 'tanggal_dibuat' => '2023-10-29', 'tanggal_selesai' => null]
         ]);
 
         // DB::table('perusahaan')->insert([

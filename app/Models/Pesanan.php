@@ -11,12 +11,16 @@ class Pesanan extends Model
 
     public $timestamps = false;
 
+    public $table = 'pesanan';
+
     protected $fillable = [
         'tarif',
         'tanggal_pemesanan',
         'tanggal_terkirim',
         'foto_terkirim',
         'daftar_muat_id',
+        'counter_asal_id',
+        'counter_destinasi_id',
         'user_id',
         'metode_destinasi_pengiriman_id',
         'metode_asal_pengiriman_id',
@@ -27,11 +31,20 @@ class Pesanan extends Model
         'lng_destinasi',
         'alamat_destinasi',
         'status_id',
+        'layanan_id'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function asalCounter() {
+        return $this->belongsTo(Counter::class, 'counter_asal_id');
+    }
+
+    public function destinasiCounter() {
+        return $this->belongsTo(Counter::class, 'counter_destinasi_id');
     }
 
     public function daftarMuat()
@@ -42,6 +55,11 @@ class Pesanan extends Model
     public function status()
     {
         return $this->belongsTo(StatusPesanan::class, 'status_id');
+    }
+
+    public function layanan()
+    {
+        return $this->belongsTo(Layanan::class, 'layanan_id');
     }
 
     public function barang()

@@ -11,7 +11,7 @@
             <table class="table table-xs min-w-2xl">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>No.</th>
                         <th>Nama Pengguna</th>
                         <th>Email</th>
                         <th>Peran Saat ini</th>
@@ -20,7 +20,7 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->full_name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
