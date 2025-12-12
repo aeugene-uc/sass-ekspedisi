@@ -29,7 +29,7 @@ Route::domain(config('app.domain'))->group(function () {
             Route::get('/laporan-keuangan', Platform\LaporanKeuangan::class)
                 ->name('platform.laporan-keuangan');
 
-            Route::get('/status-pesanan', Platform\StatusPesanan::class)
+            Route::get('/status-pesanan', Perusahaan\StatusPesanan::class)
                 ->name('platform.status-pesanan');
         });
     });

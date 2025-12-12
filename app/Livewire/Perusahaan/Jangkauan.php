@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Jangkauan as JangkauanModel;
 use App\Models\Perusahaan;
 
-class Jangkauan extends Component
+class Jangkauan extends DashboardPerusahaanComponent
 {
     use WithPagination;
 
@@ -112,6 +112,6 @@ class Jangkauan extends Component
 
         $perusahaans = Perusahaan::all();
 
-        return view('livewire.perusahaan.jangkauan', compact('jangkauans', 'perusahaans'));
+        return $this->viewExtends('livewire.perusahaan.jangkauan', compact('jangkauans', 'perusahaans'));
     }
 }
