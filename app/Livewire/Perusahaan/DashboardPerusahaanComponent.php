@@ -36,11 +36,12 @@ class DashboardPerusahaanComponent extends Component
                         'Peran User' => route('perusahaan.peran-user', ['subdomain' => $subdomain]),
                         'Kendaraan' => route('perusahaan.kendaraan', ['subdomain' => $subdomain]),
                         'Counter' => route('perusahaan.counter', ['subdomain' => $subdomain]),
-                        'Jangkauan' => route('perusahaan.jangkauan', ['subdomain' => $subdomain]),
+                        'Layanan' => route('perusahaan.layanan', ['subdomain' => $subdomain]),
                         'Daftar Pesanan' => route('perusahaan.pesanan', ['subdomain' => $subdomain]),
-                        // 'Layanan' => route('perusahaan.layanan', ['subdomain' => $subdomain]),
+                        'Daftar Muat' => route('perusahaan.daftar-muat', ['subdomain' => $subdomain]),
                         // 'Laporan Keuangan' => route('platform.laporan-keuangan')
-                    ]
+                    ],
+                    'Buat Pesanan' => route('perusahaan.buat-pesanan', ['subdomain' => $subdomain])
                 ]
             ]);
     }

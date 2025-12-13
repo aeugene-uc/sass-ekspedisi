@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('status_pesanans', function (Blueprint $table) {
+        Schema::create('penjemputan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->unique();
+            $table->datetime('tanggal_penjemputan');
         });
     }
 
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('status_pesanans');
+        Schema::dropIfExists('penjemputans');
     }
 };

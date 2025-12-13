@@ -10,8 +10,8 @@ return new class extends Migration {
         Schema::create('layanan', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->unique();
-            $table->string('gambar');
-            $table->string('model_harga')->unique();
+            // $table->string('gambar');
+            $table->string('model_harga');
             $table->foreignId('perusahaan_id')->constrained('perusahaan');
         });
     }

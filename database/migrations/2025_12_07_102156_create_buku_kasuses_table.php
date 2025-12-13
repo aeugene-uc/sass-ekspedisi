@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('pesanan_id')->constrained('pesanan')->cascadeOnDelete();
             $table->text('kasus');
+            $table->text('foto')->nullable();
             $table->datetime('tanggal_dibuat');
             $table->datetime('tanggal_selesai')->nullable();
         });

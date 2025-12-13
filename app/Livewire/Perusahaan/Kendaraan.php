@@ -5,6 +5,7 @@ namespace App\Livewire\Perusahaan;
 use App\Models\JenisKendaraan;
 use Livewire\WithPagination;
 use App\Models\Kendaraan as ModelsKendaraan;
+use App\Models\Perusahaan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
@@ -87,14 +88,13 @@ class Kendaraan extends DashboardPerusahaanComponent
             $record->plat_nomor = $this->plat_nomor;
             $record->operasional = $this->operasional;
             $record->jenis_kendaraan_id = $this->jenis_kendaraan_id;
+            $record->perusahaan_id = Perusahaan::where('subdomain', $this->subdomain)->first()->id;
             $record->save();
 
             $this->modalSaveVisible = false;
 
             $this->reset(['id', 'plat_nomor', 'operasional', 'jenis_kendaraan_id']);
         } catch (QueryException $e) {
-            dd($e);
-
             if ($e->getCode() == 23000) { // SQLSTATE code for integrity constraint
                 $this->addError('save', 'Kendaraan dengan plat nomor tersebut sudah ada.');
             } else {

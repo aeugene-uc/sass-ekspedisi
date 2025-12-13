@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4">
-    <h1 class="text-3xl font-bold mb-4">Counter</h1>
+    <h1 class="text-3xl font-bold mb-4">Layanan</h1>
 
     <form class="flex gap-2" wire:submit.prevent="search">
         <input type="text" class="input w-full" placeholder="Search" wire:model="query" />
@@ -13,34 +13,34 @@
                     <tr>
                         <th>No.</th>
                         <th>Nama</th>
-                        <th>Alamat</th>
+                        <th>Model Harga</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($counters as $counter)
+                    @foreach ($layanans as $layanan)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $counter->nama }}</td>
-                            <td>{{ $counter->alamat }}</td>
+                            <td>{{ $layanan->nama }}</td>
+                            <td>{{ $layanan->model_harga }}</td>
                             <td class="inline-flex gap-2">
-                                <button class="btn btn btn-primary" wire:click="openModalUpdate({{ $counter->id }})">Edit</button>
-                                <button class="btn btn btn-error" wire:click="openModalDelete({{ $counter->id }})">Hapus</button>
+                                <button class="btn btn-primary" wire:click="openModalUpdate({{ $layanan->id }})">Edit</button>
+                                <button class="btn btn-error" wire:click="openModalDelete({{ $layanan->id }})">Hapus</button>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <button class="btn w-full btn-primary mt-4" wire:click="openModalCreate">Tambah Counter</button>
+        <button class="btn w-full btn-primary mt-4" wire:click="openModalCreate">Tambah Layanan</button>
     </div>
 
     <div class="mt-2 flex justify-end">
-        {{ $counters->links('pagination.daisyui') }}
+        {{ $layanans->links('pagination.daisyui') }}
     </div>
 
     <div class="modal {{ $modalSaveVisible ? 'modal-open' : '' }}">
-        <div class="modal-box w-2xl max-w-[90vw] flex flex-col gap-2">
+        <form class="modal-box w-96 max-w-[90vw] flex flex-col gap-2" wire:submit.prevent="save">
             <div class="flex w-full justify-between items-center">
                 <h3 class="text-lg font-bold">{{ $modalTitle }}</h3>
                 <button class="cursor-pointer" type="button" wire:click="closeModal">
@@ -54,25 +54,41 @@
                 </div> 
             @enderror
 
-            <x-dashboard.map-input 
-                :lat="$lat" 
-                :lng="$lng" 
-                wire:model.lat="lat" 
-                wire:model.lng="lng" 
-                wire:submit.prevent="geocodeAddress"
-            />
+            <input type="hidden" wire:model="id" />
 
-            <form class="flex flex-col gap-2 w-full" wire:submit.prevent="save">
-                <input type="hidden" wire:model="id" />
+            <div>
+                <label class="label mb-2">Nama</label>
+                <input type="text" class="input" placeholder="Nama" wire:model="nama" required/>
+            </div>
 
-                <div class="w-full flex flex-col">
-                    <label class="label mb-2">Nama</label>
-                    <input type="text" class="input" placeholder="Nama" wire:model="nama"/>
+            <div>
+                <label class="label mb-2">Model Harga</label>
+                <textarea class="textarea" placeholder="Model Harga" wire:model="model_harga" required></textarea>
+            </div>
+
+            <div class="text-sm space-y-2">
+                <div>
+                    <p>Variabel yang dapat digunakan dalam model harga:</p>
+
+                    <ul class="list-disc list-inside">
+                        <li><code>berat</code>: Berat dalam gram</li>
+                        <li><code>volume</code>: Volume dalam cm³</li>
+                        <li><code>jarak</code>: Jarak dalam km</li>
+                    </ul>
                 </div>
 
-                <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
-            </form>
-        </div>
+                <div>
+                    <p>Contoh penggunaan variabel dalam model harga:</p>
+                    <input class="input input-bordered w-full" readonly value="berat * volume * jarak">
+                </div>
+
+                <div>
+                    <p>Lihat selengkapnya di <a href="https://symfony.com/doc/current/components/expression_language.html" class="link link-primary" target="_blank">dokumentasi Symfony Expression Language</a>.</p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
+        </form>
     </div>
 
     <div class="modal {{ $modalDeleteVisible ? 'modal-open' : '' }}">
@@ -92,10 +108,9 @@
 
             <input type="hidden" wire:model="id" />
 
-            <p>Apa Anda yakin mau menghapus counter ini?</p>
+            <p>Apa Anda yakin mau menghapus layanan ini?</p>
 
             <button class="btn btn-error w-full mt-4" type="submit">Hapus</button>
         </form>
     </div>
-
 </div>

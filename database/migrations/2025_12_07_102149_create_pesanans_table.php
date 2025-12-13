@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->datetime('tanggal_pemesanan');
             $table->datetime('tanggal_terkirim')->nullable();
             $table->string('foto_terkirim')->nullable();
+            $table->string('foto_konfirmasi')->nullable();
             $table->foreignId('daftar_muat_id')->nullable()->constrained('daftar_muat');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('counter_asal_id')->nullable()->constrained('counters');

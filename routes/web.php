@@ -65,14 +65,17 @@ Route::domain('{subdomain}.' . config('app.domain'))
         Route::get('/counter', Perusahaan\Counter::class)
             ->name('perusahaan.counter');
 
-        Route::get('/jangkauan', Perusahaan\Jangkauan::class)
-            ->name('perusahaan.jangkauan');
-
         Route::get('/daftar-pesanan', Perusahaan\Pesanan::class)
             ->name('perusahaan.pesanan');
 
+        Route::get('/daftar-muat', Perusahaan\DaftarMuat::class)
+            ->name('perusahaan.daftar-muat');
+
+        Route::get('/layanan', Perusahaan\Layanan::class)
+            ->name('perusahaan.layanan');
+
         // Guest
-        // Route::get('/pesan', Perusahaan\Pesan::class)
-        //     ->name('perusahaan.pesan');
+        Route::get('/buat-pesanan', Perusahaan\BuatPesanan::class)
+            ->name('perusahaan.buat-pesanan');
     });
 });

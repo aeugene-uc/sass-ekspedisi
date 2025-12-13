@@ -15,8 +15,8 @@ class BukuKasus extends Model
 
     protected $fillable = [
         'pesanan_id',
-        'kasus_id',
-        'selesai',
+        'kasus',
+        'foto',
         'tanggal_dibuat',
         'tanggal_selesai',
     ];

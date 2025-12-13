@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 3, 'status' => 'Dalam Pengiriman'],
             ['id' => 4, 'status' => 'Selesai'],
             ['id' => 5, 'status' => 'Dibatalkan'],
+            ['id' => 6, 'status' => 'Diluar Jangkauan Layanan']
         ]);
 
         // DB::table('kasus')->insert([
@@ -90,11 +91,16 @@ class DatabaseSeeder extends Seeder
         //     ['id' => 3, 'kasus' => 'Penerima Menolak Barang'],
         // ]);
 
-
         DB::table('jenis_kendaraan')->insert([
-            ['id' => 1, 'jenis' => 'Motor'],
-            ['id' => 2, 'jenis' => 'Blind Van'],
-            ['id' => 3, 'jenis' => 'Truk Engkel'],
+            ['id' => 1,  'jenis' => 'Motor'],
+            ['id' => 2,  'jenis' => 'Mobil Box Kecil (Blind Van)'],
+            ['id' => 3,  'jenis' => 'Mobil Box Sedang'],
+            ['id' => 4,  'jenis' => 'Pick Up'],
+            ['id' => 5,  'jenis' => 'Truk Engkel'],
+            ['id' => 6,  'jenis' => 'Truk Double Engkel (CDE)'],
+            ['id' => 7,  'jenis' => 'Truk Fuso'],
+            ['id' => 8,  'jenis' => 'Truk Tronton'],
+            ['id' => 9,  'jenis' => 'Trailer / Kontainer'],
         ]);
 
         // 5. Assets (Kendaraan, Counter, Layanan)
@@ -110,16 +116,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('layanan')->insert([
-            ['id' => 1, 'nama' => 'Regular Economy', 'gambar' => 'service_reg.jpg', 'model_harga' => 'FLAT_RATE', 'perusahaan_id' => 1],
-            ['id' => 2, 'nama' => 'Next Day Prime', 'gambar' => 'service_next.jpg', 'model_harga' => 'DISTANCE_BASED', 'perusahaan_id' => 1]
+            ['id' => 1, 'nama' => 'Regular Economy', 'model_harga' => "berat * volume * jarak", 'perusahaan_id' => 1],
+            ['id' => 2, 'nama' => 'Next Day Prime', 'model_harga' => "berat * volume * jarak", 'perusahaan_id' => 1]
         ]);
 
         // REMOVED: DB::table('layanan_jangkauan') - Table commented out in DBML
 
-        DB::table('layanan_metode_pengiriman')->insert([
-            ['layanan_id' => 1, 'metode_asal_pengiriman_id' => 1, 'metode_destinasi_pengiriman_id' => 2],
-            ['layanan_id' => 2, 'metode_asal_pengiriman_id' => 2, 'metode_destinasi_pengiriman_id' => 2],
-        ]);
+        // DB::table('layanan_metode_pengiriman')->insert([
+        //     ['layanan_id' => 1, 'metode_asal_pengiriman_id' => 1, 'metode_destinasi_pengiriman_id' => 2],
+        //     ['layanan_id' => 2, 'metode_asal_pengiriman_id' => 2, 'metode_destinasi_pengiriman_id' => 2],
+        // ]);
 
         // 6. Transactions (Daftar Muat, Pesanan, Barang, Buku Kasus)
         DB::table('daftar_muat')->insert([
