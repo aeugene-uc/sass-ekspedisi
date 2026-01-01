@@ -31,7 +31,8 @@ class Pesanan extends Model
         'lng_destinasi',
         'alamat_destinasi',
         'status_id',
-        'layanan_id'
+        'layanan_id',
+        'midtrans_snap'
     ];
 
     public function user()

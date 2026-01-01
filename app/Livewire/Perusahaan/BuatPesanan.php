@@ -382,17 +382,24 @@ class BuatPesanan extends DashboardPerusahaanComponent
             $barangModel->save();
         }
 
-        $snapToken = Snap::getSnapToken([
-            'transaction_details' => [
-                'order_id' => $this->pesanan->id,
-                'gross_amount' => $this->pesanan->tarif,
-            ],
-            'customer_details' => [
-                'first_name' => explode(' ', Auth::user()->name)[0] ?? 'User',
-                'last_name' => explode(' ', Auth::user()->name)[1] ?? 'User',
-                'email' => Auth::user()->email
-            ],
-        ]);
+
+        if ($pesanan->midtrans_snap) {
+            $snapToken = $pesanan->midtrans_snap;
+        } else {
+            $snapToken = Snap::getSnapToken([
+                'transaction_details' => [
+                    'order_id' => $this->pesanan->id,
+                    'gross_amount' => $this->pesanan->tarif,
+                ],
+                'customer_details' => [
+                    'first_name' => explode(' ', Auth::user()->name)[0] ?? 'User',
+                    'last_name' => explode(' ', Auth::user()->name)[1] ?? 'User',
+                    'email' => Auth::user()->email
+                ],
+            ]);
+            $pesanan->midtrans_snap = $snapToken;
+            $pesanan->save();
+        }
 
         $this->dispatch('snapToken', $snapToken);
     }

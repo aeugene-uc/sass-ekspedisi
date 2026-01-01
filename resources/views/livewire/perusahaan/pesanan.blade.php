@@ -91,7 +91,7 @@
                 </button>
             </div>
 
-            <image src="{{ $modalGambarSrc }}" alt="Gambar" class="w-full h-auto rounded">
+            <img src="{{ $modalGambarSrc }}" alt="Gambar" class="w-full h-auto rounded">
         </div>
     </div>
 

@@ -392,6 +392,7 @@
         $wire.on('snapToken', snapToken => {
             snap.pay(snapToken[0], {
                 onSuccess: function(result) {
+                    alert('Pembayaran Berhasil!')
                     $wire.dispatchEvent('historiPesanan');
                 },
                 onPending: function(result) {

@@ -16,7 +16,6 @@ class DashboardPerusahaanComponent extends Component
     public $query;
     public $subdomain;
 
-    public $modalLogoutVisible = false;
 
     public function mount() {
         $this->subdomain = request()->route('subdomain');
@@ -25,16 +24,7 @@ class DashboardPerusahaanComponent extends Component
     public function search() {
         $this->resetPage();
     }
-
-    public function openModalLogout() {
-        $this->modalLogoutVisible = true;
-        dd('lol');
-    }
-
-    public function closeModalLogout() {
-        $this->modalLogoutVisible = false;
-    }
-
+    
     public function logout() {
         Auth::logout();
         return redirect()->route('perusahaan.login', ['subdomain' => $this->subdomain]);
@@ -58,9 +48,9 @@ class DashboardPerusahaanComponent extends Component
                         'Daftar Muat' => route('perusahaan.daftar-muat', ['subdomain' => $subdomain]),
                         // 'Laporan Keuangan' => route('platform.laporan-keuangan')
                     ],
-                    'Buat Pesanan' => route('perusahaan.buat-pesanan', ['subdomain' => $subdomain])
-                ],
-                'modalLogoutVisible' => $this->modalLogoutVisible 
+                    'Buat Pesanan' => route('perusahaan.buat-pesanan', ['subdomain' => $subdomain]),
+                    'Histori Pesanan' => route('perusahaan.histori-pesanan', ['subdomain' => $subdomain])
+                ]
             ]);
     }
 }

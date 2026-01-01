@@ -222,11 +222,18 @@ class Pesanan extends DashboardPerusahaanComponent
         if ($this->query != null) {
             $pesanans->where(function($q) {
                 $q->where('id', $this->query)
+                ->orWhere('tarif', 'like', '%' . $this->query . '%')
                 ->orWhere('daftar_muat_id', 'like', '%' . $this->query . '%')
                 ->orWhere('tanggal_pemesanan', 'like', '%' . $this->query . '%')
                 ->orWhere('tanggal_terkirim', 'like', '%' . $this->query . '%')
                 ->orWhere('alamat_asal', 'like', '%' . $this->query . '%')
                 ->orWhere('alamat_destinasi', 'like', '%' . $this->query . '%')
+                ->orWhereHas('asalCounter', function($q2) {
+                    $q2->where('nama', 'like', '%' . $this->query . '%');
+                })
+                ->orWhereHas('destinasiCounter', function($q2) {
+                    $q2->where('nama', 'like', '%' . $this->query . '%');
+                })
                 ->orWhereHas('user', function($q1) {
                     $q1->where('full_name', 'like', '%' . $this->query . '%') // sesuaikan nama kolom
                       ->orWhere('email', 'like', '%' . $this->query . '%'); // sesuaikan nama kolom

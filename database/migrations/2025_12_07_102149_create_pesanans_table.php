@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->text('alamat_destinasi')->nullable();
             $table->foreignId('status_id')->constrained('status_pesanan');
             $table->foreignId('layanan_id')->constrained('layanan');
+            $table->string('midtrans_snap')->nullable();
         });
     }
 
