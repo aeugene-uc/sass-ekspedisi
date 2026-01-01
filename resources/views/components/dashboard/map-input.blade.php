@@ -37,6 +37,6 @@
         "
         x-init="init()"
     >
-        <div id="map" class="w-full h-96 rounded border"></div>
+        <div id="map" class="w-full h-96 rounded border" wire:ignore></div>
     </div>
 </div>

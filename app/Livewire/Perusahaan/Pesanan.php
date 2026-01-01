@@ -8,6 +8,8 @@ use App\Models\Pesanan as ModelsPesanan;
 use App\Models\StatusPesanan;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Midtrans\Config;
+use Midtrans\Transaction;
 
 class Pesanan extends DashboardPerusahaanComponent
 {
@@ -71,7 +73,7 @@ class Pesanan extends DashboardPerusahaanComponent
     public function createKasus() {
         $this->validate([
             'kasus_kasus' => 'required|string',
-            'pesanan_id' => 'required|integer|exists:pesanan,id'
+            'modalPesananId' => 'required|integer|exists:pesanan,id'
         ]);
 
         $kasus = new BukuKasus();
@@ -81,10 +83,10 @@ class Pesanan extends DashboardPerusahaanComponent
         $kasus->tanggal_selesai = null;
         $kasus->save();
 
-        $pesanan = ModelsPesanan::where('id', $this->modalPesananId)->first();
-        $pesanan->tanggal_terkirim = null;
-        $pesanan->status_id = 3;
-        $pesanan->save();
+        // $pesanan = ModelsPesanan::where('id', $this->modalPesananId)->first();
+        // $pesanan->tanggal_terkirim = null;
+        // $pesanan->status_id = 3;
+        // $pesanan->save();
 
         $this->closeModalCreateKasus();
     }
@@ -101,10 +103,10 @@ class Pesanan extends DashboardPerusahaanComponent
             $kasus->tanggal_selesai = now();
         } else {
             $kasus->tanggal_selesai = null;
-            $pesanan = ModelsPesanan::where('id', $this->modalPesananId)->first();
-            $pesanan->tanggal_terkirim = null;
-            $pesanan->status_id = 3;
-            $pesanan->save();
+            // $pesanan = ModelsPesanan::where('id', $this->modalPesananId)->first();
+            // $pesanan->tanggal_terkirim = null;
+            // $pesanan->status_id = 3;
+            // $pesanan->save();
         }
         $kasus->save();
         $this->closeModalUpdateKasus();
@@ -184,10 +186,6 @@ class Pesanan extends DashboardPerusahaanComponent
     }
 
     public function updateStatusPesanan($pesanan_id, $status_id) {
-        $this->validate([
-            'statusPesanan' => 'required|integer'
-        ]);
-
         try {
             $pesanan = ModelsPesanan::where('id', $pesanan_id)->firstOrFail();
             $pesanan->status_id = $status_id;
@@ -211,6 +209,11 @@ class Pesanan extends DashboardPerusahaanComponent
 
     public function render()
     {
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
         $pesanans = ModelsPesanan::with(['bukuKasus', 'status', 'daftarMuat', 'layanan', 'user', 'asalCounter', 'destinasiCounter'])
             ->whereHas('layanan.perusahaan', function($query) {
                 $query->where('subdomain', $this->subdomain);
@@ -235,6 +238,19 @@ class Pesanan extends DashboardPerusahaanComponent
                     $q3->where('status', 'like', '%' . $this->query . '%'); // sesuaikan nama kolom
                 });
             });
+        }
+
+        foreach ($pesanans->get() as $pesanan) {
+            if ($pesanan->status_id == 1 && !$pesanan->bukuKasus->count() > 0) {
+                try {
+                    $status = Transaction::status($pesanan->id);
+
+                    if ($status->transaction_status == 'settlement') {
+                        $pesanan->status_id = 2; // Update status to 'Paid'
+                        $pesanan->save();
+                    }
+                } catch (\Exception $e) {}
+            }
         }
 
         return $this->viewExtends('livewire.perusahaan.pesanan', [

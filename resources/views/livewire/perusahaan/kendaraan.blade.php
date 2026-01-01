@@ -55,16 +55,6 @@
                     {{ $message }}
                 </div> 
             @enderror
-{{-- 
-            @if ($errors->any())
-                <div class="alert alert-error">
-                    <ul>
-                        @foreach ($errors->all() as $err)
-                            <li>{{ $err }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif --}}
 
             <input type="hidden" wire:model="id" />
 

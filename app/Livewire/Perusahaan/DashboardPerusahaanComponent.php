@@ -3,6 +3,7 @@
 namespace App\Livewire\Perusahaan;
 
 use App\Models\Perusahaan;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -14,7 +15,9 @@ class DashboardPerusahaanComponent extends Component
     public $modalTitle = '';
     public $query;
     public $subdomain;
-    
+
+    public $modalLogoutVisible = false;
+
     public function mount() {
         $this->subdomain = request()->route('subdomain');
     }
@@ -22,7 +25,21 @@ class DashboardPerusahaanComponent extends Component
     public function search() {
         $this->resetPage();
     }
-    
+
+    public function openModalLogout() {
+        $this->modalLogoutVisible = true;
+        dd('lol');
+    }
+
+    public function closeModalLogout() {
+        $this->modalLogoutVisible = false;
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect()->route('perusahaan.login', ['subdomain' => $this->subdomain]);
+    }
+
     #[Layout('livewire.layouts.dashboard')]
     public function viewExtends($view, $viewData)
     {
@@ -42,7 +59,8 @@ class DashboardPerusahaanComponent extends Component
                         // 'Laporan Keuangan' => route('platform.laporan-keuangan')
                     ],
                     'Buat Pesanan' => route('perusahaan.buat-pesanan', ['subdomain' => $subdomain])
-                ]
+                ],
+                'modalLogoutVisible' => $this->modalLogoutVisible 
             ]);
     }
 }

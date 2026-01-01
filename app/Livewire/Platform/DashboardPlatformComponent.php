@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Platform;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -15,6 +16,11 @@ class DashboardPlatformComponent extends Component
 
     public function search() {
         $this->resetPage();
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect()->route('platform.login');
     }
 
     #[Layout('livewire.layouts.dashboard')]
