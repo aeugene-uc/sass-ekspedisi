@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
 
         // Note: Table name in DBML is 'Counter', usually mapped to 'counters' in Laravel
         DB::table('counters')->insert([
-            ['id' => 1, 'perusahaan_id' => 1, 'alamat' => 'Jl. Sudirman No. 45, Jakarta Pusat', 'nama' => 'Counter Sudirman', 'lat' => -6.2146, 'lng' => 106.8451],
+            ['id' => 1, 'perusahaan_id' => 1, 'alamat' => 'Polsek Tebet, Jalan Tebet Barat Dalam, RW 03, Tebet Barat, Tebet, Jakarta Selatan, Daerah Khusus Ibukota Jakarta, Jawa, 12810, Indonesia', 'nama' => 'Counter Sudirman', 'lat' => -6.2146, 'lng' => 106.8451],
             ['id' => 2, 'perusahaan_id' => 1, 'alamat' => 'Jl. Dago No. 10, Bandung', 'nama' => 'Counter Dago', 'lat' => -6.8915, 'lng' => 107.6107]
         ]);
 

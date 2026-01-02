@@ -287,7 +287,7 @@
                     <input type="file" class="file-input" accept="image/*" required wire:model="foto" />
                 </div>
 
-                <button class="btn btn-primary w-full mt-4" type="submit" wire:loading.attr="disabled">Tambah Barang</button>
+                <button class="btn btn-primary w-full mt-4" type="submit" {{ $foto == null ? 'disabled' : '' }}>Tambah Barang</button>
             </form>
         </div>
     </div>
