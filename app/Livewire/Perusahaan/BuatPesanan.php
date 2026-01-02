@@ -8,6 +8,7 @@ use App\Models\Layanan;
 use App\Models\Pesanan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http as FacadesHttp;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,7 @@ use League\Uri\Http;
 use Livewire\Attributes\On;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 function imageToBase64($file): ?array {
@@ -83,6 +85,9 @@ class BuatPesanan extends DashboardPerusahaanComponent
     public $totalBiayaVar = null;
     public $snapToken = null;
     public $pesanan = null;
+
+    public $layanans = null;
+    public $counters = null;
 
     // protected $rules = [
     //     'berat' => 'required|numeric|min:1',
@@ -154,8 +159,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
         ];
 
         // Reset form fields
-        // $this->reset(['berat', 'panjang', 'lebar', 'tinggi', 'foto']);
-
+        $this->reset(['berat', 'panjang', 'lebar', 'tinggi', 'foto']);
         $this->closeModal();
     }
 
@@ -247,11 +251,12 @@ class BuatPesanan extends DashboardPerusahaanComponent
     }
 
     public function getDistanceKmOSRM(array $origin, array $destination): float {
-        $response = FacadesHttp::get('router.project-osrm.org/table/v1/driving/' .
+        $url = 'https://router.project-osrm.org/table/v1/driving/' .
             $origin['lng'] . ',' . $origin['lat'] . ';' .
-            $destination['lng'] . ',' . $destination['lat'],
-            ['annotations' => 'distance']
-        );
+            $destination['lng'] . ',' . $destination['lat'] .
+            '?annotations=distance';
+
+        $response = FacadesHttp::get($url);
 
         if (!$response->ok()) {
             throw new \Exception('OSRM request failed');
@@ -266,6 +271,39 @@ class BuatPesanan extends DashboardPerusahaanComponent
         return round($meters / 1000, 3); // convert → km
     }
 
+    // public function getDistanceKmOSRM(array $origin, array $destination): float
+    // {
+    //     if (!isset($origin['lat'], $origin['lng'], $destination['lat'], $destination['lng'])) {
+    //         return 0.0;
+    //     }
+
+    //     $url = 'https://router.project-osrm.org/table/v1/driving/' .
+    //         $origin['lng'] . ',' . $origin['lat'] . ';' .
+    //         $destination['lng'] . ',' . $destination['lat'];
+
+    //     try {
+    //         $response = FacadesHttp::get($url, [
+    //             'query' => ['annotations' => 'distance']
+    //         ]);
+
+    //         if (!$response->ok()) {
+    //             throw new \Exception('OSRM request failed: ' . $response->body());
+    //         }
+
+    //         $data = $response->json();
+
+    //         if (!isset($data['distances'][0][1])) {
+    //             throw new \Exception('Invalid OSRM response: ' . json_encode($data));
+    //         }
+
+    //         return round($data['distances'][0][1] / 1000, 3); // meters → km
+    //     } catch (\Exception $e) {
+    //         Log::error('OSRM error: ' . $e->getMessage());
+    //         return 0.0;
+    //     }
+    // }
+
+
     public function totalBiaya() {
         $total = [
             'biaya_barang' => [],
@@ -278,22 +316,23 @@ class BuatPesanan extends DashboardPerusahaanComponent
         }
 
         $expressionLanguage = new ExpressionLanguage();
+        $jarak = $this->getDistanceKmOSRM(
+            [
+                'lat' => $this->asal_lat_lng['lat'],
+                'lng' => $this->asal_lat_lng['lng']
+            ],
+            [
+                'lat' => $this->tujuan_lat_lng['lat'],
+                'lng' => $this->tujuan_lat_lng['lng']
+            ]
+        );
 
         foreach ($this->barangs as $barang) {
             $biaya = $expressionLanguage->evaluate(
                 $selectedLayanan->model_harga, [
                     'berat' => $barang['berat'],
                     'volume' => ($barang['panjang'] * $barang['lebar'] * $barang['tinggi']),
-                    'jarak' => $this->getDistanceKmOSRM(
-                        [
-                            'lat' => $this->asal_lat_lng['lat'],
-                            'lng' => $this->asal_lat_lng['lng']
-                        ],
-                        [
-                            'lat' => $this->tujuan_lat_lng['lat'],
-                            'lng' => $this->tujuan_lat_lng['lng']
-                        ]
-                    )
+                    'jarak' => $jarak
                 ]
             ) ?? 0;
 
@@ -382,13 +421,14 @@ class BuatPesanan extends DashboardPerusahaanComponent
             $barangModel->save();
         }
 
-
         if ($pesanan->midtrans_snap) {
             $snapToken = $pesanan->midtrans_snap;
         } else {
+            $midtransOrderId = 'Pesanan_' . $this->pesanan->id . '_' . Uuid::uuid4()->toString();
+
             $snapToken = Snap::getSnapToken([
                 'transaction_details' => [
-                    'order_id' => $this->pesanan->id,
+                    'order_id' => $midtransOrderId,
                     'gross_amount' => $this->pesanan->tarif,
                 ],
                 'customer_details' => [
@@ -398,6 +438,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
                 ],
             ]);
             $pesanan->midtrans_snap = $snapToken;
+            $pesanan->midtrans_order_id = $midtransOrderId;
             $pesanan->save();
         }
 
@@ -410,6 +451,14 @@ class BuatPesanan extends DashboardPerusahaanComponent
     }
 
     public function mount() {
+        $this->counters = Counter::with('perusahaan')->whereHas('perusahaan', function ($query) {
+            $query->where('subdomain', $this->subdomain);
+        })->get();
+
+        $this->layanans = Layanan::with('perusahaan')->whereHas('perusahaan', function ($query) {
+            $query->where('subdomain', $this->subdomain);
+        })->get();
+
         $this->counter_tujuan = Counter::with('perusahaan')->whereHas('perusahaan', function ($query) {
             $query->where('subdomain', request()->route('subdomain'));
         })->first()->id ?? null;
@@ -448,12 +497,6 @@ class BuatPesanan extends DashboardPerusahaanComponent
         }
 
         return $this->viewExtends('livewire.perusahaan.buat-pesanan', [
-            'layanans' => Layanan::with('perusahaan')->whereHas('perusahaan', function ($query) {
-                $query->where('subdomain', $this->subdomain);
-            })->get(),
-            'counters' => Counter::with('perusahaan')->whereHas('perusahaan', function ($query) {
-                $query->where('subdomain', $this->subdomain);
-            })->get(),
             'total_biaya' => $this->step == 4 ? $this->totalBiayaVar : 0,
         ]);
     }

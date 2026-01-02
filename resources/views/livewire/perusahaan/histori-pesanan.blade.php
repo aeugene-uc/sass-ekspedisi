@@ -126,8 +126,7 @@
                                 <td>
                                     <img 
                                         src="{{ asset('storage/images/barang/' . $barang->foto) }}" 
-                                        alt="Foto Barang" class="h-15 w-15 object-cover"
-                                        class="cursor-pointer"
+                                        alt="Foto Barang" class="h-15 w-15 object-cover cursor-pointer"
                                         wire:click="openModalGambar('{{ asset('storage/images/barang/' . $barang->foto) }}')"
                                     >
                                 </td>
@@ -169,6 +168,7 @@
                 onSuccess: function(result) {
                     alert('Pembayaran Berhasil!')
                     document.getElementById('pembayaran-gagal').style.display = 'hidden';
+                    window.location.reload();
                 },
                 onPending: function(result) {
                 },

@@ -153,6 +153,19 @@ class HistoriPesanan extends DashboardPerusahaanComponent
             });
         }
 
+        foreach ($query->get() as $pesanan) {
+            if ($pesanan->status_id == 1 && !$pesanan->bukuKasus->count() > 0) {
+                try {
+                    $status = Transaction::status($pesanan->midtrans_order_id);
+
+                    if ($status->transaction_status == 'settlement') {
+                        $pesanan->status_id = 2; // Update status to 'Paid'
+                        $pesanan->save();
+                    }
+                } catch (\Exception $e) {}
+            }
+        }
+
         return $this->viewExtends('livewire.perusahaan.histori-pesanan', [
             'pesanans' => $query->paginate(10),
         ]);
