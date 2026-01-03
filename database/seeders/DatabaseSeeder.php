@@ -21,8 +21,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 1, 'nama' => 'Platform Admin'],
             ['id' => 2, 'nama' => 'Admin Operasional'],
             ['id' => 3, 'nama' => 'Kurir Driver'],
-            ['id' => 4, 'nama' => 'Mandor'],
-            ['id' => 5, 'nama' => 'Customer']
+            ['id' => 4, 'nama' => 'Customer'],
         ]);
 
         // 3. Users (KEPT AS IS)
@@ -59,7 +58,7 @@ class DatabaseSeeder extends Seeder
                 'full_name' => 'Rina Customer', 
                 'email' => 'rina@gmail.com', 
                 'password' => Hash::make('password123'), 
-                'peran_id' => 5, 
+                'peran_id' => 4, 
                 'is_platform_admin' => false, 
                 'perusahaan_id' => 2 // Assigned to Cargo Kilat (ID 2)
             ],
@@ -116,8 +115,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('layanan')->insert([
-            ['id' => 1, 'nama' => 'Regular Economy', 'model_harga' => "berat * volume * jarak", 'perusahaan_id' => 1],
-            ['id' => 2, 'nama' => 'Next Day Prime', 'model_harga' => "berat * volume * jarak", 'perusahaan_id' => 1]
+            ['id' => 1, 'nama' => 'Regular Economy', 'model_harga' => "max(berat, volume / 5) * (1 + (jarak > 100 ? 0.10 : 0)) * (0.0008 * jarak + 5) + 2", 'perusahaan_id' => 1],
+            ['id' => 2, 'nama' => 'Next Day Prime', 'model_harga' => "max(berat, volume / 5) * 1.6 * (0.0012 * jarak + 7) + 10", 'perusahaan_id' => 1]
         ]);
 
         // REMOVED: DB::table('layanan_jangkauan') - Table commented out in DBML

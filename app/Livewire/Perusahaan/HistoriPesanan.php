@@ -25,6 +25,8 @@ class HistoriPesanan extends DashboardPerusahaanComponent
 
     public $modalBatalTransaksiVisible = false;
 
+    private $pesanans;
+
     public function openModalGambar($src) {
         $this->closeModal();
         $this->modalGambarSrc = $src;
@@ -108,15 +110,23 @@ class HistoriPesanan extends DashboardPerusahaanComponent
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
-        try {
-            Transaction::cancel($this->modalPesananId);
-            $pesanan->status_id = 5; // Canceled
-            $pesanan->save();
-            $this->closeModal();
-        } catch (\Exception $e) {
-            $this->addError('batal', 'Gagal membatalkan pesanan. Silakan coba lagi.');
-            return;
-        }
+        // try {
+        //     Transaction::cancel($this->modalPesananId);
+
+        // } catch (\Exception $e) {
+        //     dd($e);
+        //     $this->addError('batal', 'Gagal membatalkan pesanan. Silakan coba lagi.');
+        //     return;
+        // }
+
+        $pesanan->status_id = 5; // Canceled
+        $pesanan->save();
+        $this->closeModal();
+    }
+
+    public function mount() {
+        $this->subdomain = request()->route('subdomain');
+        $subdomain = $this->subdomain;
     }
 
 
@@ -124,14 +134,27 @@ class HistoriPesanan extends DashboardPerusahaanComponent
     {
         $subdomain = $this->subdomain;
 
-        $query = Pesanan::with(['user.perusahaan', 'status'])
+        $pesanans = Pesanan::with(['user.perusahaan', 'status'])
             ->where('user_id', Auth::user()->id)
             ->whereHas('layanan.perusahaan', function ($q) use ($subdomain) {
                 $q->where('subdomain', $subdomain);
             });
 
+        // foreach ($pesanans->get() as $pesanan) {
+        //     if ($pesanan->status_id == 1 && !$pesanan->bukuKasus->count() > 0) {
+        //         try {
+        //             $status = Transaction::status($pesanan->midtrans_order_id);
+
+        //             if ($status->transaction_status == 'settlement') {
+        //                 $pesanan->status_id = 2; // Update status to 'Paid'
+        //                 $pesanan->save();
+        //             }
+        //         } catch (\Exception $e) {}
+        //     }
+        // }
+
         if ($this->query) {
-            $query->where(function($q) {
+            $pesanans->where(function($q) {
                 $q->where('id', $this->query)
                 ->orWhere('tarif', 'like', '%' . $this->query . '%')
                 ->orWhere('tanggal_pemesanan', 'like', '%' . $this->query . '%')
@@ -153,21 +176,8 @@ class HistoriPesanan extends DashboardPerusahaanComponent
             });
         }
 
-        foreach ($query->get() as $pesanan) {
-            if ($pesanan->status_id == 1 && !$pesanan->bukuKasus->count() > 0) {
-                try {
-                    $status = Transaction::status($pesanan->midtrans_order_id);
-
-                    if ($status->transaction_status == 'settlement') {
-                        $pesanan->status_id = 2; // Update status to 'Paid'
-                        $pesanan->save();
-                    }
-                } catch (\Exception $e) {}
-            }
-        }
-
         return $this->viewExtends('livewire.perusahaan.histori-pesanan', [
-            'pesanans' => $query->paginate(10),
+            'pesanans' => $pesanans->paginate(10),
         ]);
     }
 }

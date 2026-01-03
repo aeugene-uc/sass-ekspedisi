@@ -47,7 +47,7 @@ class Register extends Component
         $user->email = $this->email;
         $user->password = bcrypt($this->password);
         $user->is_platform_admin = false;
-        $user->peran_id = 5; // Default peran: customer
+        $user->peran_id = 4; // Default peran: customer
         $user->save();
 
         Auth::login($user);

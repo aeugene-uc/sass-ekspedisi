@@ -166,7 +166,6 @@
         $wire.on('snapToken', snapToken => {
             snap.pay(snapToken[0], {
                 onSuccess: function(result) {
-                    alert('Pembayaran Berhasil!')
                     document.getElementById('pembayaran-gagal').style.display = 'hidden';
                     window.location.reload();
                 },

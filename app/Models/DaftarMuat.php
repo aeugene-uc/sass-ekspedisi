@@ -30,7 +30,7 @@ class DaftarMuat extends Model
         return $this->belongsTo(Kendaraan::class);
     }
 
-    public function kurirs()
+    public function kurir()
     {
         return $this->belongsToMany(User::class, 'kurir_daftar_muat', 'daftar_muat_id', 'kurir_id');
     }

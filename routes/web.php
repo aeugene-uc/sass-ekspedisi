@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\MidtransController;
 use App\Livewire\Perusahaan;
 use App\Livewire\Platform;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,9 @@ Route::domain(config('app.domain'))->group(function () {
     // Landing
     Route::get('/', [LandingController::class, 'beranda'])->name('beranda');
     Route::get('/tentang-kami', [LandingController::class, 'profilPerusahaan'])->name('profil-perusahaan');
+
+    // Payment gateway link
+    Route::post('/midtrans-webhook', [MidtransController::class, 'handleWebhook'])->name('midtrans.webhook');
 
     // Platform Dashboard
     Route::prefix('admin')->group(function () {

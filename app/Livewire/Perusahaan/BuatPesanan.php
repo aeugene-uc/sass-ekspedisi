@@ -58,6 +58,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
 
     public $step = 1;
     public $barangs = [];
+    // private $barangPhotos = [];
 
     public $modalBarangOpen = false;
     public $berat = null;
@@ -154,9 +155,9 @@ class BuatPesanan extends DashboardPerusahaanComponent
             'panjang' => $this->panjang,
             'lebar' => $this->lebar,
             'tinggi' => $this->tinggi,
-            'foto' => $this->foto->temporaryUrl(),
-            'foto_file' => imageToBase64($this->foto)
+            'foto' => $this->foto //->temporaryUrl()
         ];
+        // $this->barangPhotos[] = imageToBase64($this->foto);
 
         // Reset form fields
         $this->reset(['berat', 'panjang', 'lebar', 'tinggi', 'foto']);
@@ -165,6 +166,10 @@ class BuatPesanan extends DashboardPerusahaanComponent
 
     public function hapusBarang() {
         if ($this->hapusBarangIndex !== null && isset($this->barangs[$this->hapusBarangIndex])) {
+            if ($this->barangs[$this->hapusBarangIndex]['foto']) {
+                Storage::disk('public')->delete('images/barang/' . basename($this->barangs[$this->hapusBarangIndex]['foto']->getClientOriginalName()));
+            }
+
             array_splice($this->barangs, $this->hapusBarangIndex, 1);
         }
 
@@ -362,7 +367,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
         $pesanan->user_id = Auth::user()->id;
         
         if ($this->metode_asal_pengiriman == 1) {
-            $counterAsalModel = Counter::where('id', $this->counter_asal)->first();
+            $counterAsalModel = Counter::find($this->counter_asal);
 
             $pesanan->counter_asal_id = $counterAsalModel->id ?? null;
             $pesanan->alamat_asal = $counterAsalModel->alamat ?? null;
@@ -380,7 +385,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
         $pesanan->metode_asal_pengiriman_id = $this->metode_asal_pengiriman;
 
         if ($this->metode_destinasi_pengiriman == 1) {
-            $counterTujuanModel = Counter::where('id', $this->counter_tujuan)->first();
+            $counterTujuanModel = Counter::find($this->counter_tujuan);
 
             $pesanan->counter_destinasi_id = $counterTujuanModel->id ?? null;
             $pesanan->alamat_destinasi = $counterTujuanModel->alamat ?? null;
@@ -408,8 +413,10 @@ class BuatPesanan extends DashboardPerusahaanComponent
   
         $pesanan->save();
 
-        foreach ($this->barangs as $barang) {
-            $fotoFileName = base64ToImage($barang['foto_file']);
+        for ($i = 0; $i < count($this->barangs); $i++) {
+            // $fotoFileName = base64ToImage($this->barangPhotos[$i]);
+            $barang = $this->barangs[$i];
+            $fotoFileName = basename($barang['foto']->store('images/barang', 'public'));
 
             $barangModel = new Barang();
             $barangModel->berat_g = $barang['berat'];
@@ -421,26 +428,29 @@ class BuatPesanan extends DashboardPerusahaanComponent
             $barangModel->save();
         }
 
-        if ($pesanan->midtrans_snap) {
-            $snapToken = $pesanan->midtrans_snap;
-        } else {
-            $midtransOrderId = 'Pesanan_' . $this->pesanan->id . '_' . Uuid::uuid4()->toString();
+        // if ($pesanan->midtrans_snap) {
+        //     $snapToken = $pesanan->midtrans_snap;
+        // } else {
 
-            $snapToken = Snap::getSnapToken([
-                'transaction_details' => [
-                    'order_id' => $midtransOrderId,
-                    'gross_amount' => $this->pesanan->tarif,
-                ],
-                'customer_details' => [
-                    'first_name' => explode(' ', Auth::user()->name)[0] ?? 'User',
-                    'last_name' => explode(' ', Auth::user()->name)[1] ?? 'User',
-                    'email' => Auth::user()->email
-                ],
-            ]);
-            $pesanan->midtrans_snap = $snapToken;
-            $pesanan->midtrans_order_id = $midtransOrderId;
-            $pesanan->save();
-        }
+        // }
+        $midtransOrderId = 'Pesanan_' . $this->pesanan->id . '_' . Uuid::uuid4()->toString();
+
+        $snapToken = Snap::getSnapToken([
+            'transaction_details' => [
+                'order_id' => $midtransOrderId,
+                'gross_amount' => $this->pesanan->tarif,
+            ],
+            'customer_details' => [
+                'first_name' => explode(' ', Auth::user()->name)[0] ?? 'User',
+                'last_name' => explode(' ', Auth::user()->name)[1] ?? 'User',
+                'email' => Auth::user()->email
+            ],
+        ]);
+
+
+        $pesanan->midtrans_snap = $snapToken;
+        $pesanan->midtrans_order_id = $midtransOrderId;
+        $pesanan->save();
 
         $this->dispatch('snapToken', $snapToken);
     }
@@ -481,6 +491,8 @@ class BuatPesanan extends DashboardPerusahaanComponent
                 'lat' => $latLng['lat'] ?? null,
                 'lng' => $latLng['lng'] ?? null
             ];
+
+            \Log::info('Search Address Destinasi');
         }
 
         if ($this->step == 3 && $this->metode_asal_pengiriman == 1) {
@@ -490,10 +502,13 @@ class BuatPesanan extends DashboardPerusahaanComponent
                 'lat' => $latLng['lat'] ?? null,
                 'lng' => $latLng['lng'] ?? null
             ];
+
+            \Log::info('Search Address Asal');
         }
 
         if ($this->step == 4) {
             $this->totalBiayaVar = $this->totalBiaya();
+            \Log::info('Total Biaya: ');
         }
 
         return $this->viewExtends('livewire.perusahaan.buat-pesanan', [

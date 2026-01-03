@@ -207,24 +207,6 @@ class Pesanan extends DashboardPerusahaanComponent
     public function mount() {
         $this->subdomain = request()->route('subdomain');
         $this->statusPesanans = StatusPesanan::all();
-
-        $this->pesanans = ModelsPesanan::with(['bukuKasus', 'status', 'daftarMuat', 'layanan', 'user', 'asalCounter', 'destinasiCounter'])
-            ->whereHas('layanan.perusahaan', function($query) {
-                $query->where('subdomain', $this->subdomain);
-            });
-
-        foreach ($this->pesanans->get() as $pesanan) {
-            if ($pesanan->status_id == 1 && !$pesanan->bukuKasus->count() > 0) {
-                try {
-                    $status = Transaction::status($pesanan->midtrans_order_id);
-
-                    if ($status->transaction_status == 'settlement') {
-                        $pesanan->status_id = 2; // Update status to 'Paid'
-                        $pesanan->save();
-                    }
-                } catch (\Exception $e) {}
-            }
-        }
     }
 
     public function render()
@@ -234,8 +216,26 @@ class Pesanan extends DashboardPerusahaanComponent
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
+        $pesanans = ModelsPesanan::with(['bukuKasus', 'status', 'daftarMuat', 'layanan', 'user', 'asalCounter', 'destinasiCounter'])
+            ->whereHas('layanan.perusahaan', function($query) {
+                $query->where('subdomain', $this->subdomain);
+            });
+
+        // foreach ($pesanans->get() as $pesanan) {
+        //     if ($pesanan->status_id == 1 && !$pesanan->bukuKasus->count() > 0) {
+        //         try {
+        //             $status = Transaction::status($pesanan->midtrans_order_id);
+
+        //             if ($status->transaction_status == 'settlement') {
+        //                 $pesanan->status_id = 2; // Update status to 'Paid'
+        //                 $pesanan->save();
+        //             }
+        //         } catch (\Exception $e) {}
+        //     }
+        // }
+
         if ($this->query != null) {
-            $this->pesanans->where(function($q) {
+            $pesanans->where(function($q) {
                 $q->where('id', $this->query)
                 ->orWhere('tarif', 'like', '%' . $this->query . '%')
                 ->orWhere('daftar_muat_id', 'like', '%' . $this->query . '%')
@@ -263,7 +263,7 @@ class Pesanan extends DashboardPerusahaanComponent
         }
 
         return $this->viewExtends('livewire.perusahaan.pesanan', [
-            'pesanans' => $this->pesanans->paginate(10)
+            'pesanans' => $pesanans->paginate(10)
         ]);
     }
 }

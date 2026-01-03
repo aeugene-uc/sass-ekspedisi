@@ -22,13 +22,13 @@
                 </thead>
                 <tbody>
                     @foreach ($barangs as $barang)
-                        <tr>
+                        <tr wire:key="barang_{{ $loop->index }}">
                             <td>{{ $loop->iteration }}</td>
                             <td>
                                 <img 
-                                    src="{{ $barang['foto'] }}" 
+                                    src="{{ $barang['foto']->temporaryUrl() }}" 
                                     alt="Foto Barang" class="h-15 w-15 object-cover cursor-pointer"
-                                    wire:click="openModalGambar('{{ $barang['foto'] }}')"
+                                    wire:click="openModalGambar('{{ $barang['foto']->temporaryURL() }}')"
                                 >
                             </td>
                             <td>{{ $barang['berat'] }}g</td>
@@ -79,7 +79,7 @@
 
                     <select class="select" wire:model.change="counter_tujuan">
                         @foreach( $counters as $counter )
-                            <option value="{{ $counter->id }}">{{ $counter->nama }} - {{ $counter->alamat }}</option>
+                            <option wire:key="counter_tujuan_{{ $counter->id }}" value="{{ $counter->id }}">{{ $counter->nama }} - {{ $counter->alamat }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -122,7 +122,7 @@
                     <select class="select" wire:model.change="counter_asal">
                         @foreach( $counters as $counter )
                             @if ($counter->id != $counter_tujuan)
-                                <option value="{{ $counter->id }}">{{ $counter->nama }} - {{ $counter->alamat }}</option>
+                                <option wire:key="counter_asal_{{ $counter->id }}" value="{{ $counter->id }}">{{ $counter->nama }} - {{ $counter->alamat }}</option>
                             @endif
                         @endforeach
                     </select>
@@ -157,7 +157,7 @@
             <label class="label mb-2">Pilih Layanan:</label>
             <select class="select" wire:model.change="layanan_id">
                 @foreach( $layanans as $layanan )
-                    <option value="{{ $layanan->id }}">{{ $layanan->nama }}</option>
+                    <option wire:key="{{ $layanan->id }}" value="{{ $layanan->id }}">{{ $layanan->nama }}</option>
                 @endforeach
             </select>
         </div>
@@ -175,13 +175,13 @@
                 </thead>
                 <tbody>
                     @foreach ($barangs as $barang)
-                        <tr>
+                        <tr wire:key="barang_checkout_{{ $loop->index }}">
                             <td>{{ $loop->iteration }}</td>
                             <td>
                                 <img 
-                                    src="{{ $barang['foto'] }}" 
+                                    src="{{ $barang['foto']->temporaryURL() }}" 
                                     alt="Foto Barang" class="h-15 w-15 object-cover cursor-pointer"
-                                    wire:click="openModalGambar('{{ $barang['foto'] }}')"
+                                    wire:click="openModalGambar('{{ $barang['foto']->temporaryURL() }}')"
                                 >
                             </td>
                             <td>{{ $barang['berat'] }}g</td>
@@ -392,8 +392,7 @@
         $wire.on('snapToken', snapToken => {
             snap.pay(snapToken[0], {
                 onSuccess: function(result) {
-                    alert('Pembayaran Berhasil!')
-                    $wire.dispatchEvent('historiPesanan');
+                    window.location = '{{ route("perusahaan.histori-pesanan", ["subdomain" => $subdomain]) }}';
                 },
                 onPending: function(result) {
                 },
@@ -401,7 +400,7 @@
                     document.getElementById('pembayaran-gagal').style.display = 'block';
                 }
             });
-        })
+        });
     </script>
     @endscript
 </div>

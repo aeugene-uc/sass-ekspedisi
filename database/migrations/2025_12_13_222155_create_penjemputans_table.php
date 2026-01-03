@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('penjemputan', function (Blueprint $table) {
             $table->id();
-            $table->datetime('tanggal_penjemputan');
+            $table->dateTime('tanggal_penjemputan');
+            $table->dateTime('tanggal_selesai');
+            $table->foreignId('kendaraan_id')
+                  ->constrained('kendaraan');
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penjemputans');
+        Schema::dropIfExists('penjemputan');
     }
 };

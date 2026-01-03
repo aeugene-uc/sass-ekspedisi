@@ -16,7 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.subdomain' => \App\Http\Middleware\CheckSubdomain::class,
             'perusahaan.noauth' => \App\Http\Middleware\PerusahaanNoAuth::class,
             'platform.noauth' => \App\Http\Middleware\PlatformNoAuth::class,
-            'perusahaan.login.access' => \App\Http\Middleware\PerusahaanLoginAccess::class,
+            'perusahaan.login.access' => \App\Http\Middleware\PerusahaanLoginAccess::class
+        ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'midtrans-webhook',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
