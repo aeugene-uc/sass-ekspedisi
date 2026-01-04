@@ -141,7 +141,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
                 'panjang' => 'required|numeric|min:1',
                 'lebar' => 'required|numeric|min:1',
                 'tinggi' => 'required|numeric|min:1',
-                'foto' => 'required|image'
+                'foto' => 'required|image|max:102400'
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $allErrors = $e->validator->errors()->all();

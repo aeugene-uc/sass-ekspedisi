@@ -117,14 +117,79 @@
                                             N/A
                                         @endif
                                     </td>
+                                    <td>
+                                        <button class="btn btn-error btn-xs" wire:click="openModalHapusPesanan({{ $pesanan->id }})">Hapus</button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>   
                 </div> 
 
-                <!-- <button class="btn btn-primary mt-4 w-full" type="submit">Simpan</button> -->
+                <button class="btn btn-primary w-full mt-4" type="button" wire:click="openModalTambahPesanan">Tambah Pesanan</button>
             @endif
+        </form>
+    </div>
+
+    <div class="modal {{ $modalTambahPesananVisible ? 'modal-open' : '' }}">
+        <form class="modal-box w-11/12 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="simpanDetailMuat">
+            <div class="flex w-full justify-between items-center">
+                <h3 class="text-lg font-bold">Tambah Pesanan</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalTambahPesanan">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+
+            <div class="flex w-full gap-2">
+                <input type="text" class="input w-full" placeholder="Search Pesanan" wire:model.change="pesananQuery" />
+                <button type="button" class="btn btn-primary" wire:click="$refresh">Search</button>
+            </div>
+
+            <div class="w-full overflow-x-auto">
+                <table class="table table-xs w-full mt-2">
+                    <thead>
+                        <tr>
+                            <th>Id Pesanan</th>
+                            <th>Pemesan</th>
+                            <th>Alamat Destinasi</th>
+                            <th>Tanggal Terkirim</th>
+                            <th>Foto Terkirim</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($this->allPesanans as $pesanan)
+                            <tr>
+                                <td>{{ $pesanan->id }}</td>
+                                <td>{{ $pesanan->user->full_name }}
+                                <td>{{ $pesanan->alamat_destinasi }}</td>
+                                <td>{{ $pesanan->tanggal_terkirim ?? 'N/A' }}</td>
+                                <td>
+                                    @if ($pesanan->foto_terkirim != null)
+                                        <img 
+                                            src="{{ asset('storage/images/pesanan/' . $pesanan->foto_terkirim) }}" 
+                                            alt="Logo" class="h-15 w-15 object-cover"
+                                            class="cursor-pointer"
+                                            wire:click="openModalGambar('{{ asset('storage/images/pesanan/' . $pesanan->foto_terkirim) }}')"
+                                        >
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="checkbox" value="{{ $pesanan->id }}" wire:model="dmPesanans" wire:key="{{ $pesanan->id }}" />
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>   
+            </div>
+
+            <div class="mt-2 flex justify-end">
+                {{ $this->allPesanans->links('pagination.daisyui') }}
+            </div>
+
+            <button class="btn btn-primary w-full mt-2" type="button" wire:click="tambahPesanan">Simpan</button>
         </form>
     </div>
 
