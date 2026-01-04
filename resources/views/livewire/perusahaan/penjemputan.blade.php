@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-4">
-    <h1 class="text-3xl font-bold mb-4">Daftar Muat</h1>
+    <h1 class="text-3xl font-bold mb-4">Penjemputan</h1>
 
     <form class="flex gap-2" wire:submit.prevent="$refresh">
-        <input type="text" class="input w-full" placeholder="Search" wire:model="daftarMuatQuery" />
+        <input type="text" class="input w-full" placeholder="Search" wire:model="penjemputanQuery" />
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
@@ -14,54 +14,60 @@
                         <th>Id</th>
                         <th>Tanggal Dibuat</th>
                         <th>Tanggal Selesai</th>
-                        <th>Counter Asal</th>
+                        <th>Counter Destinasi</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($this->daftarMuats as $daftarMuat)
+                    @foreach ($this->penjemputans as $penjemputan)
                         <tr>
-                            <td>{{ $daftarMuat->id }}</td>
-                            <td>{{ $daftarMuat->tanggal_dibuat }}</td>
-                            <td>{{ $daftarMuat->tanggal_selesai ?? 'N/A' }}</td>
-                            <td>Counter {{ $daftarMuat->counter->nama }}</td>
+                            <td>{{ $penjemputan->id }}</td>
+                            <td>{{ $penjemputan->tanggal_dibuat }}</td>
+                            <td>{{ $penjemputan->tanggal_selesai ?? 'N/A' }}</td>
+                            <td>Counter {{ $penjemputan->counter->nama }}</td>
                             <td>
                                 <div class="flex gap-2">
-                                    <button class="btn btn-primary" wire:click="openModalDetailMuat({{ $daftarMuat->id }})">Lihat Detail</button>
-                                    <button class="btn btn-error" wire:click="openModalHapusDM({{ $daftarMuat->id }})">Hapus</button>
+                                    <button class="btn btn-primary" wire:click="openModalPenjemputan({{ $penjemputan->id }})">Lihat Detail</button>
+                                    <button class="btn btn-error" wire:click="openModalHapusPenjemputan({{ $penjemputan->id }})">Hapus</button>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
+
+                    @if(count($this->penjemputans) == 0)
+                        <tr>
+                            <td colspan="5" class="p-10 text-center text-sm">Belum ada penjemputan yang ditambahkan.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
 
-        <button class="btn btn-primary mt-4 w-full" wire:click="openModalBuatDM">Buat Daftar Muat</button>
+        <button class="btn btn-primary mt-4 w-full" wire:click="openModalBuatPenjemputan">Buat Penjemputan</button>
     </div>
 
-    <div class="modal {{ $modalBuatDMVisible ? 'modal-open' : '' }}">
-        <form class="modal-box w-96 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="buatDetailMuat">
+    <div class="modal {{ $modalBuatPenjemputanVisible ? 'modal-open' : '' }}">
+        <form class="modal-box w-96 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="buatPenjemputan">
             <div class="flex w-full justify-between items-center">
-                <h3 class="text-lg font-bold">Buat Daftar Muat</h3>
-                <button class="cursor-pointer" type="button" wire:click="closeModalBuatDM">
+                <h3 class="text-lg font-bold">Buat Penjemputan</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalBuatPenjemputan">
                     <i class="fa fa-close"></i>
                 </button>
             </div>
 
             <div class="flex flex-col gap-2 text-sm mt-4">
                 <div class="flex gap-2 items-center">
-                    <strong>Counter Asal:</strong>
-                    <select class="select select-sm" wire:model.live="newDMCounterAsalId">
+                    <strong>Counter Destinasi:</strong>
+                    <select class="select select-sm" wire:model.live="newCounterDestinasiId">
                         @foreach($this->counters as $counter)
-                            <option value="{{ $counter->id }}" wire:key="counter_asal_{{ $counter->id }}">{{ $counter->nama }}</option>
+                            <option value="{{ $counter->id }}" wire:key="counter_destinasi_{{ $counter->id }}">{{ $counter->nama }}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="flex gap-2 items-center">
                     <strong>Kendaraan:</strong>
-                    <select class="select select-sm" wire:model.live="newDMKendaraanId">
+                    <select class="select select-sm" wire:model.live="newKendaraanId">
                         @foreach($this->kendaraans as $kendaraan)
                             <option 
                                 value="{{ $kendaraan->id }}" 
@@ -82,29 +88,57 @@
         </form>
     </div>
 
-    <div class="modal {{ $modalDetailMuatVisible ? 'modal-open' : '' }}">
-        <form class="modal-box w-11/12 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="simpanDetailMuat">
-            <div class="flex w-full justify-between items-center">
-                <h3 class="text-lg font-bold">{{ $modalTitle }}</h3>
-                <button class="cursor-pointer" type="button" wire:click="closeModalDetailMuat">
+    <div class="modal {{ $modalBuatKurirVisible ? 'modal-open' : '' }}">
+        <form class="modal-box w-96 max-w-[90vw] max-h-[90vh]" wire:submit.prevent="closeModalBuatKurir">
+            <div class="flex w-full justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Atur Kurir Baru</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalBuatKurir">
                     <i class="fa fa-close"></i>
                 </button>
             </div>
 
-            @if($dm)
+            <div class="w-full overflow-x-auto">
+                <table class="table table-sm w-full">
+                    <tbody>
+                        @foreach ($this->kurirs as $kurir)
+                            <tr>
+                                <td>{{ $kurir->full_name }}</td>
+                                <td class="flex justify-end">
+                                    <input type="checkbox" class="checkbox" value="{{ $kurir->id }}" wire:model="newKurirs" wire:key="{{ $kurir->id }}" />
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>   
+            </div> 
+
+            <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
+        </form>
+    </div>
+
+    <div class="modal {{ $modalDetailPenjemputanVisible ? 'modal-open' : '' }}">
+        <form class="modal-box w-11/12 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="simpanPenjemputan">
+            <div class="flex w-full justify-between items-center">
+                <h3 class="text-lg font-bold">{{ $modalTitle }}</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalPenjemputan">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+
+            @if($p)
                 <div class="flex flex-col gap-2 text-sm mt-4">
                     <div class="flex gap-2 items-center">
-                        <strong>Counter Asal:</strong>
-                        <select class="select select-sm" wire:model="dm.counter_asal_id" wire:change="simpanDetailMuat">
+                        <strong>Counter Destinasi:</strong>
+                        <select class="select select-sm" wire:model="p.counter_destinasi_id" wire:change="simpanPenjemputan">
                             @foreach($this->counters as $counter)
-                                <option value="{{ $counter->id }}" wire:key="counter_asal_{{ $counter->id }}">{{ $counter->nama }}</option>
+                                <option value="{{ $counter->id }}" wire:key="counter_destinasi_{{ $counter->id }}">{{ $counter->nama }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="flex gap-2 items-center">
                         <strong>Kendaraan:</strong>
-                        <select class="select select-sm" wire:model="dm.kendaraan_id" wire:change="simpanDetailMuat">
+                        <select class="select select-sm" wire:model="p.kendaraan_id" wire:change="simpanPenjemputan">
                             @foreach($this->kendaraans as $kendaraan)
                                 <option 
                                     value="{{ $kendaraan->id }}" 
@@ -116,18 +150,18 @@
 
                     <div class="flex gap-2 items-center">
                         <strong>Daftar Kurir:</strong>
-                        <span>{{ $dm->kurir->pluck('full_name')->join(', ') }}</span>
+                        <span>{{ $p->kurir->pluck('full_name')->join(', ') }}</span>
                         <button class="btn btn-primary btn-xs" wire:click="openModalAturKurir">Atur Kurir</button>
                     </div>
 
                     <div class="flex gap-2 items-center">
                         <strong>Tanggal Dibuat:</strong>
-                        <span>{{ $dm->tanggal_dibuat }}</span>
+                        <span>{{ $p->tanggal_dibuat }}</span>
                     </div>
 
                     <div class="flex gap-2 items-center">
                         <strong>Tanggal Selesai:</strong>
-                        <span>{{ $dm->tanggal_selesai ?? 'N/A' }}</span>
+                        <span>{{ $p->tanggal_selesai ?? 'N/A' }}</span>
                     </div>
                 </div>
 
@@ -144,7 +178,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($dm->pesanan as $pesanan)
+                            @foreach ($p->pesanan as $pesanan)
                                 <tr>
                                     <td>{{ $pesanan->id }}</td>
                                     <td>{{ $pesanan->user->full_name }}
@@ -176,8 +210,36 @@
         </form>
     </div>
 
+    <div class="modal {{ $modalAturKurirVisible ? 'modal-open' : '' }}">
+        <form class="modal-box w-96 max-w-[90vw] max-h-[90vh]" wire:submit.prevent="aturKurir">
+            <div class="flex w-full justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Atur Kurir</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalAturKurir">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+
+            <div class="w-full overflow-x-auto">
+                <table class="table table-sm w-full">
+                    <tbody>
+                        @foreach ($this->kurirs as $kurir)
+                            <tr>
+                                <td>{{ $kurir->full_name }}</td>
+                                <td class="flex justify-end">
+                                    <input type="checkbox" class="checkbox" value="{{ $kurir->id }}" wire:model="pKurirs" wire:key="{{ $kurir->id }}" />
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>   
+            </div> 
+
+            <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
+        </form>
+    </div>
+
     <div class="modal {{ $modalTambahPesananVisible ? 'modal-open' : '' }}">
-        <form class="modal-box w-11/12 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="simpanDetailMuat">
+        <form class="modal-box w-11/12 max-w-[90vw] max-h-[90vh] flex flex-col gap-2" wire:submit.prevent="simpanPenjemputan">
             <div class="flex w-full justify-between items-center">
                 <h3 class="text-lg font-bold">Tambah Pesanan</h3>
                 <button class="cursor-pointer" type="button" wire:click="closeModalTambahPesanan">
@@ -222,7 +284,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <input type="checkbox" class="checkbox" value="{{ $pesanan->id }}" wire:model="dmPesanans" wire:key="{{ $pesanan->id }}" />
+                                    <input type="checkbox" class="checkbox" value="{{ $pesanan->id }}" wire:model="pPesanans" wire:key="{{ $pesanan->id }}" />
                                 </td>
                             </tr>
                         @endforeach
@@ -238,62 +300,6 @@
         </form>
     </div>
 
-    <div class="modal {{ $modalBuatDMKurirVisible ? 'modal-open' : '' }}">
-        <form class="modal-box w-96 max-w-[90vw] max-h-[90vh]" wire:submit.prevent="closeModalBuatKurir">
-            <div class="flex w-full justify-between items-center mb-4">
-                <h3 class="text-lg font-bold">Atur Kurir Baru</h3>
-                <button class="cursor-pointer" type="button" wire:click="closeModalBuatKurir">
-                    <i class="fa fa-close"></i>
-                </button>
-            </div>
-
-            <div class="w-full overflow-x-auto">
-                <table class="table table-sm w-full">
-                    <tbody>
-                        @foreach ($this->kurirs as $kurir)
-                            <tr>
-                                <td>{{ $kurir->full_name }}</td>
-                                <td class="flex justify-end">
-                                    <input type="checkbox" class="checkbox" value="{{ $kurir->id }}" wire:model="newDMKurirs" wire:key="{{ $kurir->id }}" />
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>   
-            </div> 
-
-            <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
-        </form>
-    </div>
-
-    <div class="modal {{ $modalAturKurirVisible ? 'modal-open' : '' }}">
-        <form class="modal-box w-96 max-w-[90vw] max-h-[90vh]" wire:submit.prevent="aturKurir">
-            <div class="flex w-full justify-between items-center mb-4">
-                <h3 class="text-lg font-bold">Atur Kurir</h3>
-                <button class="cursor-pointer" type="button" wire:click="closeModalAturKurir">
-                    <i class="fa fa-close"></i>
-                </button>
-            </div>
-
-            <div class="w-full overflow-x-auto">
-                <table class="table table-sm w-full">
-                    <tbody>
-                        @foreach ($this->kurirs as $kurir)
-                            <tr>
-                                <td>{{ $kurir->full_name }}</td>
-                                <td class="flex justify-end">
-                                    <input type="checkbox" class="checkbox" value="{{ $kurir->id }}" wire:model="dmKurirs" wire:key="{{ $kurir->id }}" />
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>   
-            </div> 
-
-            <button class="btn btn-primary w-full mt-4" type="submit">Simpan</button>
-        </form>
-    </div>
-
     <div class="modal {{ $modalHapusPesananVisible ? 'modal-open' : '' }}">
         <form class="modal-box w-96 max-w-[90vw]" wire:submit.prevent="hapusPesanan">
             <div class="flex w-full justify-between items-center mb-4">
@@ -303,28 +309,22 @@
                 </button>
             </div>
 
-            @error('delete') 
-                <div class="alert alert-error mb-4 w-full">
-                    {{ $message }}
-                </div> 
-            @enderror
-
             <p>Apa Anda yakin mau menghapus pesanan ini dari daftar muat?</p>
 
             <button class="btn btn-error w-full mt-4" type="submit">Hapus</button>
         </form>
     </div>
 
-    <div class="modal {{ $modalHapusDMVisible ? 'modal-open' : '' }}">
-        <form class="modal-box w-96 max-w-[90vw]" wire:submit.prevent="hapusDM">
+    <div class="modal {{ $modalHapusPVisible ? 'modal-open' : '' }}">
+        <form class="modal-box w-96 max-w-[90vw]" wire:submit.prevent="hapusP">
             <div class="flex w-full justify-between items-center mb-4">
-                <h3 class="text-lg font-bold">Hapus Daftar Muat</h3>
-                <button class="cursor-pointer" type="button" wire:click="closeModalHapusDM">
+                <h3 class="text-lg font-bold">Hapus Penjemputan</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalHapusP">
                     <i class="fa fa-close"></i>
                 </button>
             </div>
 
-            <p>Apa Anda yakin mau menghapus daftar muat ini?</p>
+            <p>Apa Anda yakin mau menghapus penjemputan ini?</p>
 
             <button class="btn btn-error w-full mt-4" type="submit">Hapus</button>
         </form>

@@ -80,6 +80,9 @@ Route::domain('{subdomain}.' . config('app.domain'))
         Route::get('/daftar-muat', Perusahaan\DaftarMuat::class)
             ->name('perusahaan.daftar-muat');
 
+        Route::get('/penjemputan', Perusahaan\Penjemputan::class)
+            ->name('perusahaan.penjemputan');
+
         Route::get('/layanan', Perusahaan\Layanan::class)
             ->name('perusahaan.layanan');
 

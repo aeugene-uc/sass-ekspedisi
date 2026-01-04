@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('foto_terkirim')->nullable();
             $table->string('foto_konfirmasi')->nullable();
             $table->foreignId('daftar_muat_id')->nullable()->constrained('daftar_muat');
+            $table->foreignId('penjemputan_id')->nullable()->constrained('penjemputan');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('counter_asal_id')->nullable()->constrained('counters');
             $table->foreignId('counter_destinasi_id')->nullable()->constrained('counters');

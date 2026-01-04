@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('penjemputan', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('tanggal_penjemputan');
-            $table->dateTime('tanggal_selesai');
-            $table->foreignId('kendaraan_id')
-                  ->constrained('kendaraan');
+            $table->dateTime('tanggal_dibuat');
+            $table->dateTime('tanggal_selesai')->nullable();
+            $table->foreignId('counter_destinasi_id')->constrained('counters');
+            $table->foreignId('kendaraan_id')->constrained('kendaraan');
         });
     }
 

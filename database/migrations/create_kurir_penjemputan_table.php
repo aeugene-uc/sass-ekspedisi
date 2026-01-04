@@ -8,12 +8,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('kurir_penjemputan', function (Blueprint $table) {
-            $table->foreignId('kurir_id')
-                  ->constrained('users')
-                  ->primary();
+            // $table->foreignId('kurir_id')
+            //       ->constrained('users')
+            //       ->primary();
 
-            $table->foreignId('penjemputan_id')
-                  ->constrained('penjemputan');
+            // $table->foreignId('penjemputan_id')
+            //       ->constrained('penjemputan');
+
+            $table->foreignId('penjemputan_id')->constrained('penjemputan')->cascadeOnDelete();
+            $table->foreignId('kurir_id')->constrained('users')->cascadeOnDelete();
+            $table->primary(['penjemputan_id', 'kurir_id']);
         });
     }
 

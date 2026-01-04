@@ -46,6 +46,7 @@ class DashboardPerusahaanComponent extends Component
                         'Layanan' => route('perusahaan.layanan', ['subdomain' => $subdomain]),
                         'Daftar Pesanan' => route('perusahaan.pesanan', ['subdomain' => $subdomain]),
                         'Daftar Muat' => route('perusahaan.daftar-muat', ['subdomain' => $subdomain]),
+                        'Penjemputan' => route('perusahaan.penjemputan', ['subdomain' => $subdomain]),
                         // 'Laporan Keuangan' => route('platform.laporan-keuangan')
                     ],
                     'Buat Pesanan' => route('perusahaan.buat-pesanan', ['subdomain' => $subdomain]),
