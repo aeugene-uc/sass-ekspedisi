@@ -61,7 +61,7 @@
 
                                     @if($pesanan->status->id == 1)
                                         <br><br>
-                                        <a class="link link-primary" wire:click="bayar({{ $pesanan->id }})">Bayar Sekarang</a>
+                                        <a class="link link-primary" href="{{ $pesanan->midtrans_snap }}">Bayar Sekarang</a>
                                         <br><br>
                                         <a class="link link-primary" wire:click="openModalBatalTransaksi({{ $pesanan->id }})">Batalkan Pesanan</a>
                                     @endif

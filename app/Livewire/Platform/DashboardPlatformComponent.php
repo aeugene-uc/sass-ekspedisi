@@ -31,7 +31,7 @@ class DashboardPlatformComponent extends Component
                 'title' => 'Platform Admin Dashboard',
                 'links' => [
                     'Perusahaan' => route('platform.perusahaan'),
-                    'Laporan Keuangan' => route('platform.laporan-keuangan')
+                    // 'Laporan Keuangan' => route('platform.laporan-keuangan')
                 ]
             ]);
     }

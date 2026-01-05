@@ -16,7 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.subdomain' => \App\Http\Middleware\CheckSubdomain::class,
             'perusahaan.noauth' => \App\Http\Middleware\PerusahaanNoAuth::class,
             'platform.noauth' => \App\Http\Middleware\PlatformNoAuth::class,
-            'perusahaan.login.access' => \App\Http\Middleware\PerusahaanLoginAccess::class
+            'perusahaan.login.access' => \App\Http\Middleware\PerusahaanLoginAccess::class,
+            'perusahaan.admin.access' => \App\Http\Middleware\PerusahaanAdmin::class,
+            'perusahaan.kurir.access' => \App\Http\Middleware\PerusahaanKurir::class
         ]);
 
         $middleware->validateCsrfTokens(except: [

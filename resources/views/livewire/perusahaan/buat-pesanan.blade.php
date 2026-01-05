@@ -389,17 +389,8 @@
             });
         });
 
-        $wire.on('snapToken', snapToken => {
-            snap.pay(snapToken[0], {
-                onSuccess: function(result) {
-                    window.location = '{{ route("perusahaan.histori-pesanan", ["subdomain" => $subdomain]) }}';
-                },
-                onPending: function(result) {
-                },
-                onError: function(result) {
-                    document.getElementById('pembayaran-gagal').style.display = 'block';
-                }
-            });
+        $wire.on('paymentURL', paymentURL => {
+            window.location = paymentURL[0];
         });
     </script>
     @endscript

@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 Route::domain(config('app.domain'))->group(function () {
     // Landing
-    Route::get('/', [LandingController::class, 'beranda'])->name('beranda');
-    Route::get('/tentang-kami', [LandingController::class, 'profilPerusahaan'])->name('profil-perusahaan');
+    // Route::get('/', [LandingController::class, 'beranda'])->name('beranda');
+    // Route::get('/tentang-kami', [LandingController::class, 'profilPerusahaan'])->name('profil-perusahaan');
+    Route::get('/', function() {
+        return redirect()->route('platform.login');
+    });
 
     // Payment gateway link
     Route::post('/midtrans-webhook', [MidtransController::class, 'handleWebhook'])->name('midtrans.webhook');
@@ -30,8 +33,8 @@ Route::domain(config('app.domain'))->group(function () {
             Route::get('/perusahaan', Platform\Perusahaan::class)
                 ->name('platform.perusahaan');
 
-            Route::get('/laporan-keuangan', Platform\LaporanKeuangan::class)
-                ->name('platform.laporan-keuangan');
+            // Route::get('/laporan-keuangan', Platform\LaporanKeuangan::class)
+            //     ->name('platform.laporan-keuangan');
 
             Route::get('/logout', function() {
                 Auth::logout();
@@ -60,31 +63,38 @@ Route::domain('{subdomain}.' . config('app.domain'))
 
     Route::middleware('perusahaan.login.access')->group(function () {
         Route::get('/dashboard', function() {
-            return redirect()->route('perusahaan.peran-user', ['subdomain' => request()->route('subdomain')]);
+            return redirect()->route('perusahaan.buat-pesanan', ['subdomain' => request()->route('subdomain')]);
         })
         ->name('perusahaan.dashboard');           
 
         // Internal
-        Route::get('/peran-user', Perusahaan\PeranUser::class)
-            ->name('perusahaan.peran-user');
+        Route::middleware('perusahaan.admin.access')->group(function () {
+            Route::get('/peran-user', Perusahaan\PeranUser::class)
+                ->name('perusahaan.peran-user');
 
-        Route::get('/kendaraan', Perusahaan\Kendaraan::class)
-            ->name('perusahaan.kendaraan');
+            Route::get('/kendaraan', Perusahaan\Kendaraan::class)
+                ->name('perusahaan.kendaraan');
 
-        Route::get('/counter', Perusahaan\Counter::class)
-            ->name('perusahaan.counter');
+            Route::get('/counter', Perusahaan\Counter::class)
+                ->name('perusahaan.counter');
 
-        Route::get('/daftar-pesanan', Perusahaan\Pesanan::class)
-            ->name('perusahaan.pesanan');
+            Route::get('/daftar-pesanan', Perusahaan\Pesanan::class)
+                ->name('perusahaan.pesanan');
 
-        Route::get('/daftar-muat', Perusahaan\DaftarMuat::class)
-            ->name('perusahaan.daftar-muat');
+            Route::get('/daftar-muat', Perusahaan\DaftarMuat::class)
+                ->name('perusahaan.daftar-muat');
 
-        Route::get('/penjemputan', Perusahaan\Penjemputan::class)
-            ->name('perusahaan.penjemputan');
+            Route::get('/penjemputan', Perusahaan\Penjemputan::class)
+                ->name('perusahaan.penjemputan');
 
-        Route::get('/layanan', Perusahaan\Layanan::class)
-            ->name('perusahaan.layanan');
+            Route::get('/layanan', Perusahaan\Layanan::class)
+                ->name('perusahaan.layanan');
+        });
+
+        Route::middleware('perusahaan.kurir.access')->group(function () {
+            Route::get('/penugasan-kurir', Perusahaan\PenugasanKurir::class)
+                ->name('perusahaan.penugasan-kurir');
+        });
 
         // Customer
         Route::get('/buat-pesanan', Perusahaan\BuatPesanan::class)

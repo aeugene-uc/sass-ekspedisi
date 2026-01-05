@@ -435,7 +435,7 @@ class BuatPesanan extends DashboardPerusahaanComponent
         // }
         $midtransOrderId = 'Pesanan_' . $this->pesanan->id . '_' . Uuid::uuid4()->toString();
 
-        $snapToken = Snap::getSnapToken([
+        $params = [
             'transaction_details' => [
                 'order_id' => $midtransOrderId,
                 'gross_amount' => $this->pesanan->tarif,
@@ -445,14 +445,18 @@ class BuatPesanan extends DashboardPerusahaanComponent
                 'last_name' => explode(' ', Auth::user()->name)[1] ?? 'User',
                 'email' => Auth::user()->email
             ],
-        ]);
+        ];
 
+        // $snapToken = Snap::getSnapToken($params);
 
-        $pesanan->midtrans_snap = $snapToken;
+        $redirectURL = Snap::createTransaction($params)->redirect_url;
+
+        $pesanan->midtrans_snap = $redirectURL;
         $pesanan->midtrans_order_id = $midtransOrderId;
         $pesanan->save();
 
-        $this->dispatch('snapToken', $snapToken);
+        // $this->dispatch('paymentURL', $snapToken);
+        $this->dispatch('paymentURL', $redirectURL);
     }
 
     #[On('historiPesanan')]

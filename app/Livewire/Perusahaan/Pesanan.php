@@ -36,6 +36,12 @@ class Pesanan extends DashboardPerusahaanComponent
     public $modalGambarVisible = false;
     public $modalGambarSrc = '';
 
+    public $modalFotoTerkirimVisible = false;
+    public $modalFotoTerkirimSrc = '';
+
+    public $modalFotoKasusVisible = false;
+    public $modalFotoKasusSrc = '';
+
     private $pesanans;
 
     protected $rules = [
@@ -70,6 +76,26 @@ class Pesanan extends DashboardPerusahaanComponent
         $this->modalGambarVisible = false;
         $this->modalGambarSrc = '';
         $this->openModalReadBarang($this->modalPesananId);
+    }
+    
+    public function openModalFotoTerkirim($src) {
+        $this->modalFotoTerkirimSrc = $src;
+        $this->modalFotoTerkirimVisible = true;
+    }
+
+    public function closeModalFotoTerkirim() {
+        $this->modalFotoTerkirimVisible = false;
+    }
+
+    public function openModalFotoKasus($src) {
+        $this->modalFotoKasusSrc = $src;
+        $this->modalFotoKasusVisible = true;
+        $this->modalReadKasusVisible = false;
+    }
+
+    public function closeModalFotoKasus() {
+        $this->modalFotoKasusVisible = false;
+        $this->modalReadKasusVisible = true;
     }
 
     public function createKasus() {

@@ -45,7 +45,7 @@
                                         src="{{ asset('storage/images/pesanan/' . $pesanan->foto_terkirim) }}" 
                                         alt="Logo" class="h-15 w-15 object-cover"
                                         class="cursor-pointer"
-                                        wire:click="openModalGambar('{{ asset('storage/images/pesanan/' . $pesanan->foto_terkirim) }}')"
+                                        wire:click="openModalFotoTerkirim('{{ asset('storage/images/pesanan/' . $pesanan->foto_terkirim) }}')"
                                     >
                                 @else
                                     N/A
@@ -104,7 +104,33 @@
                 </button>
             </div>
 
-            <image src="{{ $modalGambarSrc }}" alt="Gambar" class="w-full h-auto rounded">
+            <img src="{{ $modalGambarSrc }}" alt="Gambar" class="w-full h-auto rounded">
+        </div>
+    </div>
+
+    <div class="modal {{ $modalFotoTerkirimVisible ? 'modal-open' : '' }}">
+        <div class="modal-box w-96 max-w-[90vw] flex flex-col gap-2">
+            <div class="flex w-full justify-between items-center">
+                <h3 class="text-lg font-bold">Lihat Gambar</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalFotoTerkirim">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+
+            <img src="{{ $modalFotoTerkirimSrc }}" alt="Gambar" class="w-full h-auto rounded">
+        </div>
+    </div>
+
+    <div class="modal {{ $modalFotoKasusVisible ? 'modal-open' : '' }}">
+        <div class="modal-box w-96 max-w-[90vw] flex flex-col gap-2">
+            <div class="flex w-full justify-between items-center">
+                <h3 class="text-lg font-bold">Lihat Gambar</h3>
+                <button class="cursor-pointer" type="button" wire:click="closeModalFotoKasus">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+
+            <img src="{{ $modalFotoKasusSrc }}" alt="Gambar" class="w-full h-auto rounded">
         </div>
     </div>
 
@@ -181,12 +207,11 @@
                                 <td>{{ $kasus->tanggal_dibuat }}</td>
                                 <td>{{ $kasus->kasus }}</td>
                                 <td>
-                                    @if ($kasus->foto_kasus != null)
+                                    @if ($kasus->foto != null)
                                         <img 
-                                            src="{{ asset('storage/images/kasus/' . $kasus->foto_kasus) }}" 
-                                            alt="Foto Kasus" class="h-15 w-15 object-cover"
-                                            class="cursor-pointer"
-                                            wire:click="openModalGambar('{{ asset('storage/images/kasus/' . $kasus->foto_kasus) }}')"
+                                            src="{{ asset('storage/images/kasus/' . $kasus->foto) }}" 
+                                            alt="Foto Kasus" class="h-15 w-15 object-cover cursor-pointer"
+                                            wire:click="openModalFotoKasus('{{ asset('storage/images/kasus/' . $kasus->foto) }}')"
                                         >
                                     @else
                                         N/A

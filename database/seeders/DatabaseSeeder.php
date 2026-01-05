@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password123'), 
                 'peran_id' => 4, 
                 'is_platform_admin' => false, 
-                'perusahaan_id' => 2 // Assigned to Cargo Kilat (ID 2)
+                'perusahaan_id' => 1
             ],
         ]);
 
